@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace SpaceInvaders
 {
     /// <summary>
     /// Dummy class for demonstration
     /// </summary>
+    /// C’est un objet de « démonstration » qui hérite de GameObject, il s’agit d’une balle qui ne fait que tomber. 
+    /// Elle est capable de calculer l’évolution de sa position en fonction du temps qui passe. 
+    /// Elle sait également se représenter (dessiner l’image qui la représente).
     class BalleQuiTombe : GameObject
     {
         #region Fields
@@ -53,6 +57,16 @@ namespace SpaceInvaders
 
         public override void Update(Game gameInstance, double deltaT)
         {
+            if (gameInstance.keyPressed.Contains(Keys.Left))
+            {
+                this.x -= ballSpeed * deltaT;
+            }
+
+            if (gameInstance.keyPressed.Contains(Keys.Right))
+            {
+                this.x += ballSpeed * deltaT;
+            }
+
             y += ballSpeed * deltaT;
             if (y > gameInstance.gameSize.Height)
                 alive = false;

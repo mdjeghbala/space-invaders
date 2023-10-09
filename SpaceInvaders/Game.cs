@@ -11,6 +11,7 @@ namespace SpaceInvaders
     /// <summary>
     /// This class represents the entire game, it implements the singleton pattern
     /// </summary>
+    /// Cette elle qui contient les mécanismes fondamentaux du jeu.
     class Game
     {
 

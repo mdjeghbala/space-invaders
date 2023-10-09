@@ -9,6 +9,7 @@ namespace SpaceInvaders
     /// <summary>
     /// This is the generic abstact base class for any entity in the game
     /// </summary>
+    /// C’est une entité abstraite pour représenter un objet actif du jeux.
     abstract class GameObject
     {
        
