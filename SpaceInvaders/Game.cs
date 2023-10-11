@@ -66,6 +66,8 @@ namespace SpaceInvaders
         /// A shared simple font
         /// </summary>
         private static Font defaultFont = new Font("Times New Roman", 24, FontStyle.Bold, GraphicsUnit.Pixel);
+
+        private SpaceShip playerShip;
         #endregion
 
 
@@ -90,6 +92,12 @@ namespace SpaceInvaders
         private Game(Size gameSize)
         {
             this.gameSize = gameSize;
+
+            // Initialisez le vaisseau du joueur avec 3 vies et Position initiale centrée en bas
+            playerShip = new SpaceShip(new Vecteur2D((gameSize.Width / 2) - 15, gameSize.Height - 50), 3, SpaceInvaders.Properties.Resources.ship3);
+
+            // Ajout vaisseau du joueur à la liste des objets du jeu
+            AddNewGameObject(playerShip);
         }
 
         #endregion

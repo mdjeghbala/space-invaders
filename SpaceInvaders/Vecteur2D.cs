@@ -4,8 +4,8 @@ namespace SpaceInvaders
 {
     class Vecteur2D
     {
-        private double x;
-        private double y;
+        public double x;
+        public double y;
 
         public Vecteur2D(double x = 0, double y = 0)
         {
@@ -13,9 +13,15 @@ namespace SpaceInvaders
             this.y = y;
         }
 
-        public double X() { return x; }
+        public double X
+        {
+            get { return x; }
+        }
 
-        public double Y() { return y; }
+        public double Y
+        {
+            get { return y; }
+        }
 
         public double Norme
         {
