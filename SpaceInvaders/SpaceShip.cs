@@ -13,6 +13,7 @@ namespace SpaceInvaders
         private Vecteur2D position;
         private int lives;
         private Bitmap image;
+        private Missile missile;
 
 
         public SpaceShip(Vecteur2D position, int lives, Bitmap image) : base()
@@ -46,6 +47,14 @@ namespace SpaceInvaders
             get { return this.image; }
         }
 
+        public void shoot(Game gameInstance)
+        {
+            if(this.missile == null || !(this.missile.IsAlive()))
+            {
+                this.missile = new Missile(new Vecteur2D(this.Position.X + 10, this.Position.Y - 20), 1, SpaceInvaders.Properties.Resources.shoot1);
+                gameInstance.AddNewGameObject(this.missile);
+            }
+        }
 
         public override void Update(Game gameInstance, double deltaT)
         {
@@ -69,6 +78,11 @@ namespace SpaceInvaders
             if(Position.X < 0)
             {
                 Position.x = 0;
+            }
+
+            if (gameInstance.keyPressed.Contains(Keys.Up))
+            {
+                this.shoot(gameInstance);
             }
         }
 
