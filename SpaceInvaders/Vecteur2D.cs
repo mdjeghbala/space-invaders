@@ -21,7 +21,6 @@ namespace SpaceInvaders
         {
             get
             {
-                // Calcule et retourne la norme du vecteur.
                 return Math.Sqrt(x * x + y * y);
             }
         }
