@@ -10,41 +10,11 @@ namespace SpaceInvaders
     class SpaceShip : GameObject
     {
         private double speedPixelPerSecond = 100;
-        private Vecteur2D position;
-        private int lives;
-        private Bitmap image;
         private Missile missile;
 
 
         public SpaceShip(Vecteur2D position, int lives, Bitmap image) : base()
         {
-            this.position = position;
-            this.lives = lives;
-            this.image = image;
-        }
-
-        public double SpeedPixelPerSecond
-        {
-            get { return speedPixelPerSecond; }
-            set { speedPixelPerSecond = value; }
-        }
-
-
-        public Vecteur2D Position
-        {
-            get { return this.position; }
-        }
-
-
-        public int Lives
-        {
-            get { return this.lives; }
-        }
-
-
-        public Bitmap Image
-        {
-            get { return this.image; }
         }
 
         public void shoot(Game gameInstance)
@@ -84,21 +54,6 @@ namespace SpaceInvaders
             {
                 this.shoot(gameInstance);
             }
-        }
-
-
-        public override void Draw(Game gameInstance, Graphics graphics)
-        {
-            if(Image != null)
-            {
-                graphics.DrawImage(Image, (float)Position.X, (float)Position.Y, (float)Image.Width, (float)Image.Height);
-            }
-        }
-
-
-        public override bool IsAlive()
-        {
-            return Lives > 0;
         }
 
 
