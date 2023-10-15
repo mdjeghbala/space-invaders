@@ -13,6 +13,11 @@ namespace SpaceInvaders
         {
         }
 
+        public override void Collision(Missile m)
+        {
+            
+        }
+
         public override void Update(Game gameInstance, double deltaT)
         {
         }
