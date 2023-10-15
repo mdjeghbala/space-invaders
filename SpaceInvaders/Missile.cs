@@ -34,8 +34,13 @@ namespace SpaceInvaders
                 Lives = 0;
             }
             Console.WriteLine(Lives);
-        }
 
+            foreach(GameObject gameObject in gameInstance.gameObjects)
+            {
+                gameObject.Collision(this);
+            }
+        
+        }
         
     }
 

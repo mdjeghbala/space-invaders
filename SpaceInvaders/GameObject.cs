@@ -17,6 +17,9 @@ namespace SpaceInvaders
         {
         }
 
+        public abstract void Collision(Missile m);
+
+
         /// <summary>
         /// Update the state of a game objet
         /// </summary>

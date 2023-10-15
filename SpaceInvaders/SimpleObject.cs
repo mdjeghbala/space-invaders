@@ -36,6 +36,10 @@ namespace SpaceInvaders
             get { return this.image; }
         }
 
+        public override void Collision(Missile m)
+        {
+        }
+
         public override void Draw(Game gameInstance, Graphics graphics)
         {
             if (Image != null)
