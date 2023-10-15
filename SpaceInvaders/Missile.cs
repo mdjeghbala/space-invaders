@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace SpaceInvaders
 {
-    class Missile : GameObject
+    class Missile : SimpleObject
     {
         private double vitesse = 150;
-
-        public Missile(Vecteur2D position, int lives, Bitmap image) : base()
+        
+        public Missile(Vecteur2D position, int lives, Bitmap image) : base(image, lives, position)
         {
         }
 
@@ -20,22 +20,23 @@ namespace SpaceInvaders
             get { return vitesse; }
         }
 
+
         public override void Update(Game gameInstance, double deltaT)
         {
             // DEPLACEMENT VERTICAL DU MISSILE
             Console.WriteLine(Lives);
-            Position.y -= Vitesse * deltaT;
-            Console.WriteLine(Position.Y);
+            base.Position.y -= Vitesse * deltaT;
+            Console.WriteLine(base.Position.Y);
 
             // CONTROLE DU MISSILE HORS LIMITE VERTICALE
-            if(Position.y < -30)
+            if(base.Position.y < -30)
             {
                 Lives = 0;
             }
             Console.WriteLine(Lives);
         }
 
-
+        
     }
 
 

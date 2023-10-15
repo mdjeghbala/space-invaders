@@ -5,6 +5,7 @@ using System.Text;
 using System.Drawing;
 using System.Diagnostics;
 using System.Windows.Forms;
+using static System.Windows.Forms.AxHost;
 
 namespace SpaceInvaders
 {
@@ -67,8 +68,18 @@ namespace SpaceInvaders
         private static Font defaultFont = new Font("Times New Roman", 24, FontStyle.Bold, GraphicsUnit.Pixel);
 
         private SpaceShip playerShip;
+
+        private Bunker bunker;
+        private Bunker bunker2;
+        private Bunker bunker3;
+
+        // ENUM ET ATTRIBUT POUR GERER L'ETAT DU JEU
+        public enum GameState { Play, Pause }
+
+        private GameState state = GameState.Play;
         #endregion
 
+       
 
         #region constructors
         /// <summary>
@@ -93,10 +104,21 @@ namespace SpaceInvaders
             this.gameSize = gameSize;
 
             // Initialisez le vaisseau du joueur avec 3 vies et Position initiale centrée en bas
-            playerShip = new SpaceShip(new Vecteur2D((gameSize.Width / 2) - 15, gameSize.Height - 50), 3, SpaceInvaders.Properties.Resources.ship3);
+            this.playerShip = new SpaceShip(new Vecteur2D((gameSize.Width / 2) - 15, gameSize.Height - 50), 3, SpaceInvaders.Properties.Resources.ship3);
 
             // Ajout vaisseau du joueur à la liste des objets du jeu
-            AddNewGameObject(playerShip);
+            AddNewGameObject(this.playerShip);
+
+            // Initialisation des bunkers et Position initiale centrée en bas
+            this.bunker = new Bunker(new Vecteur2D(gameSize.Width / 2 - 45, gameSize.Height - 125));
+            this.bunker2 = new Bunker(new Vecteur2D(gameSize.Width / 2 - 190, gameSize.Height - 125));
+            this.bunker3 = new Bunker(new Vecteur2D(gameSize.Width / 2 + 100, gameSize.Height - 125));
+
+            // Ajouts des bunkers à la liste des objets du jeu
+            AddNewGameObject(this.bunker);
+            AddNewGameObject(this.bunker2);
+            AddNewGameObject(this.bunker3);
+
         }
 
         #endregion
@@ -121,37 +143,69 @@ namespace SpaceInvaders
         public void Draw(Graphics g)
         {
             foreach (GameObject gameObject in gameObjects)
-                gameObject.Draw(this, g);       
+            {
+                gameObject.Draw(this, g);
+            }
+
+            if (state == GameState.Pause)
+            {
+                // Dessiner le texte "Pause" au centre de l'écran
+                string pauseText = "Pause";
+                SizeF textSize = g.MeasureString(pauseText, defaultFont);
+                PointF textPosition = new PointF((gameSize.Width - textSize.Width) / 2, (gameSize.Height - textSize.Height) / 2);
+                g.DrawString(pauseText, defaultFont, blackBrush, textPosition);
+            }
         }
+
 
         /// <summary>
         /// Update game
         /// </summary>
         public void Update(double deltaT)
         {
-            // add new game objects
-            gameObjects.UnionWith(pendingNewGameObjects);
-            pendingNewGameObjects.Clear();
-
-            // if space is pressed
-            if (keyPressed.Contains(Keys.Space))
+            // Gestion de la touche "p" pour la pause
+            if (keyPressed.Contains(Keys.P))
             {
-                // create new BalleQuiTombe
-                GameObject newObject = new BalleQuiTombe(gameSize.Width / 2, 0);
-                // add it to the game
-                AddNewGameObject(newObject);
-                // release key space (no autofire)
-                ReleaseKey(Keys.Space);
+                if (state == GameState.Play)
+                {
+                    state = GameState.Pause;
+                }
+                else if (state == GameState.Pause)
+                {
+                    state = GameState.Play;
+                }
+
+                // Libérer la touche "p" pour éviter les changements d'état répétés
+                ReleaseKey(Keys.P);
             }
 
-            // update each game object
-            foreach (GameObject gameObject in gameObjects)
+            if(state == GameState.Play)
             {
-                gameObject.Update(this, deltaT);
-            }
+                // add new game objects
+                gameObjects.UnionWith(pendingNewGameObjects);
+                pendingNewGameObjects.Clear();
 
-            // remove dead objects
-            gameObjects.RemoveWhere(gameObject => !gameObject.IsAlive());
+
+                // if space is pressed
+                if (keyPressed.Contains(Keys.Space))
+                {
+                    // create new BalleQuiTombe
+                    GameObject newObject = new BalleQuiTombe(gameSize.Width / 2, 0);
+                    // add it to the game
+                    AddNewGameObject(newObject);
+                    // release key space (no autofire)
+                    ReleaseKey(Keys.Space);
+                }
+
+                // update each game object
+                foreach (GameObject gameObject in gameObjects)
+                {
+                    gameObject.Update(this, deltaT);
+                }
+
+                // remove dead objects
+                gameObjects.RemoveWhere(gameObject => !gameObject.IsAlive());
+            }
         }
         #endregion
     }
