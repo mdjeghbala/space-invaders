@@ -47,7 +47,6 @@ namespace SpaceInvaders
         /// State of the keyboard
         /// </summary>
         public HashSet<Keys> keyPressed = new HashSet<Keys>();
-
         #endregion
 
         #region static fields (helpers)
@@ -133,7 +132,6 @@ namespace SpaceInvaders
             // add new game objects
             gameObjects.UnionWith(pendingNewGameObjects);
             pendingNewGameObjects.Clear();
-
 
             // if space is pressed
             if (keyPressed.Contains(Keys.Space))
