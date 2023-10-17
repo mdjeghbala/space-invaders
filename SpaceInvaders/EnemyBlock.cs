@@ -8,7 +8,6 @@ namespace SpaceInvaders
     {
         private HashSet<SpaceShip> enemyShips = new HashSet<SpaceShip>();
         private int baseWidth;
-        private Vecteur2D position;
         private Size size;
 
         public EnemyBlock(Vecteur2D position, Size size)
@@ -23,7 +22,6 @@ namespace SpaceInvaders
             {
                
             }
-        }
 
         public override void Collision(Missile m)
         {
@@ -40,10 +38,6 @@ namespace SpaceInvaders
             throw new System.NotImplementedException();
         }
 
-        public override void Update(Game gameInstance, double deltaT)
-        {
-            throw new System.NotImplementedException();
-        }
     }
 
 }
