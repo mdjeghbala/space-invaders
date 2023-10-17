@@ -73,6 +73,8 @@ namespace SpaceInvaders
         private Bunker bunker2;
         private Bunker bunker3;
 
+        private EnemyBlock enemies;
+
         // ENUM ET ATTRIBUT POUR GERER L'ETAT DU JEU
         public enum GameState { Play, Pause }
 
@@ -118,6 +120,16 @@ namespace SpaceInvaders
             AddNewGameObject(this.bunker);
             AddNewGameObject(this.bunker2);
             AddNewGameObject(this.bunker3);
+
+            // Initialisez block ennemie et Position initiale coin supérieur gauche
+            this.enemies = new EnemyBlock(new Vecteur2D(10, 20), 20);
+
+            //Ajout différentes lignes d'ennemies
+            enemies.AddLine(9, 3, SpaceInvaders.Properties.Resources.ship6);
+            enemies.AddLine(9, 3, SpaceInvaders.Properties.Resources.ship5);
+
+            // Ajout block ennemie à la liste des objets du jeu
+            AddNewGameObject(this.enemies);
 
         }
 
