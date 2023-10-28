@@ -122,11 +122,16 @@ namespace SpaceInvaders
             AddNewGameObject(this.bunker3);
 
             // Initialisez block ennemie et Position initiale coin supérieur gauche
-            this.enemies = new EnemyBlock(new Vecteur2D(10, 20), 20);
-
+            this.enemies = new EnemyBlock(new Vecteur2D(10, 20), 250);
+          
             //Ajout différentes lignes d'ennemies
             enemies.AddLine(9, 3, SpaceInvaders.Properties.Resources.ship6);
-            enemies.AddLine(9, 3, SpaceInvaders.Properties.Resources.ship5);
+            enemies.AddLine(5, 3, SpaceInvaders.Properties.Resources.ship5);
+            enemies.AddLine(3, 3, SpaceInvaders.Properties.Resources.ship3);
+            enemies.AddLine(9, 3, SpaceInvaders.Properties.Resources.ship8);
+            enemies.AddLine(3, 3, SpaceInvaders.Properties.Resources.ship8);
+            enemies.AddLine(4, 3, SpaceInvaders.Properties.Resources.ship3);
+
 
             // Ajout block ennemie à la liste des objets du jeu
             AddNewGameObject(this.enemies);
@@ -168,7 +173,6 @@ namespace SpaceInvaders
                 g.DrawString(pauseText, defaultFont, blackBrush, textPosition);
             }
         }
-
 
         /// <summary>
         /// Update game

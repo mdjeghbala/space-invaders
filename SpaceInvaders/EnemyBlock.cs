@@ -16,8 +16,7 @@ namespace SpaceInvaders
         {
             this.position = position;
             this.baseWidth = baseWidth;
-            this.enemyShips = new HashSet<SpaceShip>();
-            UpdateSize();
+            this.size = new Size(baseWidth, 0); // Initialise la hauteur à 0
         }
 
         public Vecteur2D Position
@@ -34,26 +33,58 @@ namespace SpaceInvaders
 
         public void AddLine(int nbShips, int nbLives, Bitmap shipImage)
         {
-            int spacing = 10;
-            int ySpacing = 10; // Espacement vertical entre les lignes
+            int shipWidth = shipImage.Width;
+            int yOffset = this.Size.Height;
 
             for (int i = 0; i < nbShips; i++)
             {
-                var x = Position.X + (i * (shipImage.Width + spacing));
-                var y = Position.Y + (enemyShips.Count / nbShips) * (shipImage.Height + ySpacing); // Utilisation de la ligne actuelle pour calculer la position Y
-                SpaceShip enemyShip = new SpaceShip(new Vecteur2D(x, y), nbLives, shipImage);
+                Vecteur2D shipPosition;
+                if (nbShips == 1)
+                {
+                    // Placement du vaisseau au début de la ligne si il y'en a que 1
+                    shipPosition = new Vecteur2D(this.Position.X, this.Position.Y + yOffset);
+                }
+                else
+                {
+                    // Répartition des vaisseaux avec un espacement
+                    int spacing = (baseWidth - (nbShips * shipWidth)) / (nbShips - 1);
+                    shipPosition = new Vecteur2D(this.Position.X + i * (shipWidth + spacing), this.Position.Y + yOffset);
+                }
+
+                SpaceShip enemyShip = new SpaceShip(shipPosition, nbLives, shipImage);
                 enemyShips.Add(enemyShip);
             }
+
+            // Ajustement du bloc après chaque ligne ajoutée
             UpdateSize();
         }
 
-
         public void UpdateSize()
         {
-            int width = baseWidth;
-            int height = enemyShips.Count > 0 ? enemyShips.Max(ship => ship.Image.Height) : 0;
-            size = new Size(width, height);
+            // Initialisation des valeurs minimales et maximales pour le calcul de la taille
+            float minX = float.MaxValue;
+            float minY = float.MaxValue;
+            float maxX = float.MinValue;
+            float maxY = float.MinValue;
+
+            foreach (SpaceShip enemyShip in enemyShips)
+            {
+                // Trouve les coordonnées minimales et maximales de tous les vaisseaux
+                if (enemyShip.Position.X < minX)
+                    minX = (float)enemyShip.Position.X;
+                if (enemyShip.Position.Y < minY)
+                    minY = (float)enemyShip.Position.Y;
+                if (enemyShip.Position.X + enemyShip.Image.Width > maxX)
+                    maxX = (float)(enemyShip.Position.X + enemyShip.Image.Width);
+                if (enemyShip.Position.Y + enemyShip.Image.Height > maxY)
+                    maxY = (float)(enemyShip.Position.Y + enemyShip.Image.Height);
+            }
+
+            // Met à jour la position et la taille du bloc
+            this.Position = new Vecteur2D(minX, minY);
+            this.Size = new Size((int)(maxX - minX), (int)(maxY - minY));
         }
+
 
         public override void Collision(Missile m)
         {
