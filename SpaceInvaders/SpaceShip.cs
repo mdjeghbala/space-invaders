@@ -27,7 +27,7 @@ namespace SpaceInvaders
 
         }
 
-        public override void Update(Game gameInstance, double deltaT)
+ public override void Update(Game gameInstance, double deltaT)
         {
             // DEPLACEMENT LATERAL
             if (gameInstance.keyPressed.Contains(Keys.Left))
@@ -46,7 +46,7 @@ namespace SpaceInvaders
             {
                 base.Position.x = (gameInstance.gameSize.Width) - 25;
             }
-            if (base.Position.X < 0)
+            if(base.Position.X < 0)
             {
                 base.Position.x = 0;
             }

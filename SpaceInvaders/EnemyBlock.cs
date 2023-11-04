@@ -11,7 +11,7 @@ namespace SpaceInvaders
         private int baseWidth;
         private Size size;
         private Vecteur2D position;
-        private int moveSpeed = 60;
+        private int moveSpeed = 15;
 
         public EnemyBlock(Vecteur2D position, int baseWidth)
         {
@@ -101,7 +101,7 @@ namespace SpaceInvaders
                 // La direction du bloc passe à gauche
                 direction = -1;
                 // Augmentation de la vitesse horizontale du bloc
-                moveSpeed += 15;
+                moveSpeed += 3;
             }
             // Si le bloc a atteint le bord gauche de l'écran
             if (position.X <= 0 && direction == -1)
@@ -111,7 +111,7 @@ namespace SpaceInvaders
                 // La direction du bloc passe à droite
                 direction = 1;
                 // Augmentation de la vitesse horizontale du bloc
-                moveSpeed += 15;
+                moveSpeed += 3  ;
             }
 
             // Mise à jour de la position X de chaque vaisseau dans le bloc
