@@ -11,7 +11,7 @@ namespace SpaceInvaders
         private int baseWidth;
         private Size size;
         private Vecteur2D position;
-        private int moveSpeed = 60;
+        private int moveSpeed = 35;
 
         public EnemyBlock(Vecteur2D position, int baseWidth)
         {
