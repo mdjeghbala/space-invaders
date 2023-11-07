@@ -106,7 +106,7 @@ namespace SpaceInvaders
             this.gameSize = gameSize;
 
             // Initialisez le vaisseau du joueur avec 3 vies et Position initiale centrée en bas
-            this.playerShip = new SpaceShip(new Vecteur2D((gameSize.Width / 2) - 15, gameSize.Height - 50), 3, SpaceInvaders.Properties.Resources.ship3);
+            this.playerShip = new PlayerSpaceship(new Vecteur2D((gameSize.Width / 2) - 15, gameSize.Height - 50), 3, SpaceInvaders.Properties.Resources.ship3);
 
             // Ajout vaisseau du joueur à la liste des objets du jeu
             AddNewGameObject(this.playerShip);
@@ -121,7 +121,7 @@ namespace SpaceInvaders
             AddNewGameObject(this.bunker2);
             AddNewGameObject(this.bunker3);
 
-            // Initialisez block ennemie et Position initiale coin supérieur gauche
+            // Initialisation block ennemie et Position initiale coin supérieur gauche
             this.enemies = new EnemyBlock(new Vecteur2D(10, 20), 250);
           
             //Ajout différentes lignes d'ennemies
