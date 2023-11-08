@@ -31,6 +31,11 @@ namespace SpaceInvaders
         {
             
         }
+
+        protected override void OnCollision(Missile m, int numberOfPixelsInCollision)
+        {
+
+        }
     }
 
 }

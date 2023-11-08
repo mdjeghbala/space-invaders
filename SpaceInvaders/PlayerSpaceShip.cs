@@ -46,9 +46,8 @@ namespace SpaceInvaders
                 this.shoot(gameInstance);
             }
         }
-
     }
-}
+    }
 
 
 

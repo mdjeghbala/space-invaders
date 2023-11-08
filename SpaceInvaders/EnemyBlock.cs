@@ -68,11 +68,6 @@ namespace SpaceInvaders
             this.size = new Size((int)(maxX - minX), (int)(maxY - minY));
         }
 
-        public override void Collision(Missile m)
-        {
-            // Gestion de la collision ici
-        }
-
         // Fonction qui permet de faire descendre le bloc
         public void MoveDown(int distance)
         {
@@ -88,7 +83,7 @@ namespace SpaceInvaders
         public override void Update(Game gameInstance, double deltaT)
         {
             // Largeur de l'écran du jeu
-            int screenWidth = gameInstance.gameSize.Width; 
+            int screenWidth = gameInstance.gameSize.Width;
 
             // Mise à jour de la position X du bloc en fonction de la direction
             position.X += direction * moveSpeed * deltaT;
@@ -111,7 +106,7 @@ namespace SpaceInvaders
                 // La direction du bloc passe à droite
                 direction = 1;
                 // Augmentation de la vitesse horizontale du bloc
-                moveSpeed += 3  ;
+                moveSpeed += 3;
             }
 
             // Mise à jour de la position X de chaque vaisseau dans le bloc
@@ -119,6 +114,7 @@ namespace SpaceInvaders
             {
                 enemyShip.Position.X += direction * moveSpeed * deltaT;
             }
+
         }
 
         public override void Draw(Game gameInstance, Graphics graphics)
@@ -132,5 +128,11 @@ namespace SpaceInvaders
         {
             return enemyShips.Any(ship => ship.IsAlive());
         }
+
+        public override void Collision(Missile m)
+        {
+            
+        }
     }
+
 }

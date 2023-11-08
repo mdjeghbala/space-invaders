@@ -10,7 +10,7 @@ namespace SpaceInvaders
     class Missile : SimpleObject
     {
         private double vitesse = 150;
-        
+
         public Missile(Vecteur2D position, int lives, Bitmap image) : base(image, lives, position)
         {
         }
@@ -20,29 +20,32 @@ namespace SpaceInvaders
             get { return vitesse; }
         }
 
-
         public override void Update(Game gameInstance, double deltaT)
         {
-            // DEPLACEMENT VERTICAL DU MISSILE
-            Console.WriteLine(Lives);
-            base.Position.y -= Vitesse * deltaT;
-            Console.WriteLine(base.Position.Y);
+            // Mise à jour de la position verticale du missile en fonction de sa vitesse
+            base.Position.Y -= Vitesse * deltaT;
 
-            // CONTROLE DU MISSILE HORS LIMITE VERTICALE
-            if(base.Position.y < -30)
+            // Contrôle de la sortie du missile hors de l'écran vertical
+            if (base.Position.Y < -30)
             {
-                Lives = 0;
+                Lives = 0; // Détruire le missile s'il sort de l'écran
             }
-            Console.WriteLine(Lives);
 
-            foreach(GameObject gameObject in gameInstance.gameObjects)
+            // Gestion des collisions avec d'autres objets (à implémenter)
+            foreach (GameObject gameObject in gameInstance.gameObjects)
             {
                 gameObject.Collision(this);
             }
-        
         }
-        
+
+
+        protected override void OnCollision(Missile missile, int numberOfPixelsInCollision)
+        {
+
+        }
+
     }
+
 
 
 }
