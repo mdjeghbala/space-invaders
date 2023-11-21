@@ -114,6 +114,8 @@ namespace SpaceInvaders
             {
                 enemyShip.Position.X += direction * moveSpeed * deltaT;
             }
+            // Suppression des vaisseaux enemis lorsqu'ils ne sont plus en vie
+            enemyShips.RemoveWhere(ship => !ship.IsAlive());
 
         }
 
@@ -129,9 +131,15 @@ namespace SpaceInvaders
             return enemyShips.Any(ship => ship.IsAlive());
         }
 
-        public override void Collision(Missile m)
+        public override void Collision(Missile missile)
         {
-            
+            foreach (SpaceShip enemy in enemyShips)
+            {
+                if (enemy.TestCollisionRectangles(missile))
+                {
+                    enemy.Collision(missile); 
+                }
+            }
         }
     }
 

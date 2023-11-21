@@ -12,7 +12,6 @@ namespace SpaceInvaders
     
         private Missile missile;
 
-
         public SpaceShip(Vecteur2D position, int lives, Bitmap image) : base(image, lives, position)
         {
         }
@@ -32,10 +31,16 @@ namespace SpaceInvaders
             
         }
 
-        protected override void OnCollision(Missile m, int numberOfPixelsInCollision)
+        protected override void OnCollision(Missile missile, int numberOfPixelsInCollision)
         {
-
+            if (TestCollisionRectangles(missile))
+            {
+                //Reduction de la vie lorsqu'un vaisseau est touché 
+                Lives--;
+                missile.Lives--;
+            }
         }
+
     }
 
 }
