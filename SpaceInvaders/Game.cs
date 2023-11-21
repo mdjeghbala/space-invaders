@@ -106,7 +106,7 @@ namespace SpaceInvaders
             this.gameSize = gameSize;
 
             // Initialisez le vaisseau du joueur avec 3 vies et Position initiale centrée en bas
-            this.playerShip = new SpaceShip(new Vecteur2D((gameSize.Width / 2) - 15, gameSize.Height - 50), 3, SpaceInvaders.Properties.Resources.ship3);
+            this.playerShip = new PlayerSpaceship(new Vecteur2D((gameSize.Width / 2) - 15, gameSize.Height - 50), 3, SpaceInvaders.Properties.Resources.ship3);
 
             // Ajout vaisseau du joueur à la liste des objets du jeu
             AddNewGameObject(this.playerShip);
@@ -121,16 +121,16 @@ namespace SpaceInvaders
             AddNewGameObject(this.bunker2);
             AddNewGameObject(this.bunker3);
 
-            // Initialisez block ennemie et Position initiale coin supérieur gauche
+            // Initialisation block ennemie et Position initiale coin supérieur gauche
             this.enemies = new EnemyBlock(new Vecteur2D(10, 20), 250);
           
             //Ajout différentes lignes d'ennemies
-            enemies.AddLine(9, 3, SpaceInvaders.Properties.Resources.ship6);
-            enemies.AddLine(5, 3, SpaceInvaders.Properties.Resources.ship5);
-            enemies.AddLine(3, 3, SpaceInvaders.Properties.Resources.ship3);
-            enemies.AddLine(9, 3, SpaceInvaders.Properties.Resources.ship8);
-            enemies.AddLine(3, 3, SpaceInvaders.Properties.Resources.ship8);
-            enemies.AddLine(4, 3, SpaceInvaders.Properties.Resources.ship3);
+            enemies.AddLine(9, 1, SpaceInvaders.Properties.Resources.ship6);
+            enemies.AddLine(5, 1, SpaceInvaders.Properties.Resources.ship5);
+            enemies.AddLine(3, 1, SpaceInvaders.Properties.Resources.ship3);
+            enemies.AddLine(9, 1, SpaceInvaders.Properties.Resources.ship8);
+            enemies.AddLine(3, 1, SpaceInvaders.Properties.Resources.ship8);
+            enemies.AddLine(4, 1, SpaceInvaders.Properties.Resources.ship3);
 
 
             // Ajout block ennemie à la liste des objets du jeu
@@ -221,6 +221,8 @@ namespace SpaceInvaders
 
                 // remove dead objects
                 gameObjects.RemoveWhere(gameObject => !gameObject.IsAlive());
+
+                gameObjects.RemoveWhere(gameObject => gameObject is SpaceShip && !((SpaceShip)gameObject).IsAlive());
             }
         }
         #endregion

@@ -11,8 +11,7 @@ namespace SpaceInvaders
         private int baseWidth;
         private Size size;
         private Vecteur2D position;
-        private int moveSpeed = 35;
-
+        private int moveSpeed = 15;
         public EnemyBlock(Vecteur2D position, int baseWidth)
         {
             this.position = position;
@@ -68,11 +67,6 @@ namespace SpaceInvaders
             this.size = new Size((int)(maxX - minX), (int)(maxY - minY));
         }
 
-        public override void Collision(Missile m)
-        {
-            // Gestion de la collision ici
-        }
-
         // Fonction qui permet de faire descendre le bloc
         public void MoveDown(int distance)
         {
@@ -88,7 +82,7 @@ namespace SpaceInvaders
         public override void Update(Game gameInstance, double deltaT)
         {
             // Largeur de l'écran du jeu
-            int screenWidth = gameInstance.gameSize.Width; 
+            int screenWidth = gameInstance.gameSize.Width;
 
             // Mise à jour de la position X du bloc en fonction de la direction
             position.X += direction * moveSpeed * deltaT;
@@ -101,7 +95,7 @@ namespace SpaceInvaders
                 // La direction du bloc passe à gauche
                 direction = -1;
                 // Augmentation de la vitesse horizontale du bloc
-                moveSpeed += 15;
+                moveSpeed += 3;
             }
             // Si le bloc a atteint le bord gauche de l'écran
             if (position.X <= 0 && direction == -1)
@@ -111,7 +105,7 @@ namespace SpaceInvaders
                 // La direction du bloc passe à droite
                 direction = 1;
                 // Augmentation de la vitesse horizontale du bloc
-                moveSpeed += 15;
+                moveSpeed += 3;
             }
 
             // Mise à jour de la position X de chaque vaisseau dans le bloc
@@ -119,6 +113,9 @@ namespace SpaceInvaders
             {
                 enemyShip.Position.X += direction * moveSpeed * deltaT;
             }
+            // Suppression des vaisseaux enemis lorsqu'ils ne sont plus en vie
+            enemyShips.RemoveWhere(ship => !ship.IsAlive());
+
         }
 
         public override void Draw(Game gameInstance, Graphics graphics)
@@ -132,5 +129,17 @@ namespace SpaceInvaders
         {
             return enemyShips.Any(ship => ship.IsAlive());
         }
+
+        public override void Collision(Missile missile)
+        {
+            foreach (SpaceShip enemy in enemyShips)
+            {
+                if (enemy.TestCollisionRectangles(missile))
+                {
+                    enemy.Collision(missile); 
+                }
+            }
+        }
     }
+
 }

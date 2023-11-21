@@ -13,15 +13,28 @@ namespace SpaceInvaders
         {
         }
 
-        public override void Collision(Missile m)
+        protected override void OnCollision(Missile missile, int numberOfPixelsInCollision)
         {
-            
+            // Réduction du nombre de vies du missile en fonction du nombre de pixels en collision
+            missile.Lives -= numberOfPixelsInCollision;
+        }
+
+        public void TestCollision(Missile missile)
+        {
+            if (TestCollisionRectangles(missile))
+            {
+                TestCollisionPixels(missile);
+            }
+        }
+
+        public override void Collision(Missile missile)
+        {
+            TestCollision(missile);
         }
 
         public override void Update(Game gameInstance, double deltaT)
         {
+            
         }
-
     }
-
 }
