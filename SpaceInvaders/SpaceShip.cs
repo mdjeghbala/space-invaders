@@ -12,7 +12,7 @@ namespace SpaceInvaders
     
         private Missile missile;
 
-        public SpaceShip(Vecteur2D position, int lives, Bitmap image) : base(image, lives, position)
+        public SpaceShip(Vecteur2D position, int lives, Bitmap image, Side side) : base(image, lives, position, side)
         {
         }
 
@@ -20,7 +20,7 @@ namespace SpaceInvaders
         {
             if (this.missile == null || !this.missile.IsAlive())
             {
-                this.missile = new Missile(new Vecteur2D(base.Position.X + 10, base.Position.Y - 20), 1, SpaceInvaders.Properties.Resources.shoot1);
+                this.missile = new Missile(new Vecteur2D(base.Position.X + 10, base.Position.Y - 20), 1, SpaceInvaders.Properties.Resources.shoot1, Side.Ally);
                 gameInstance.AddNewGameObject(this.missile);
             }
 

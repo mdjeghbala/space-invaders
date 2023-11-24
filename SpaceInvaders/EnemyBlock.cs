@@ -12,7 +12,7 @@ namespace SpaceInvaders
         private Size size;
         private Vecteur2D position;
         private int moveSpeed = 15;
-        public EnemyBlock(Vecteur2D position, int baseWidth)
+        public EnemyBlock(Vecteur2D position, int baseWidth, Side side) : base(side)
         {
             this.position = position;
             this.baseWidth = baseWidth;
@@ -37,7 +37,7 @@ namespace SpaceInvaders
                     shipPosition = new Vecteur2D(this.position.X + i * (shipWidth + spacing), this.position.Y + yOffset);
                 }
 
-                SpaceShip enemyShip = new SpaceShip(shipPosition, nbLives, shipImage);
+                SpaceShip enemyShip = new SpaceShip(shipPosition, nbLives, shipImage, Side.Enemy);
                 enemyShips.Add(enemyShip);
             }
 

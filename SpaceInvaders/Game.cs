@@ -106,15 +106,15 @@ namespace SpaceInvaders
             this.gameSize = gameSize;
 
             // Initialisez le vaisseau du joueur avec 3 vies et Position initiale centrée en bas
-            this.playerShip = new PlayerSpaceship(new Vecteur2D((gameSize.Width / 2) - 15, gameSize.Height - 50), 3, SpaceInvaders.Properties.Resources.ship3);
+            this.playerShip = new PlayerSpaceship(new Vecteur2D((gameSize.Width / 2) - 15, gameSize.Height - 50), 3, SpaceInvaders.Properties.Resources.ship3, Side.Ally);
 
             // Ajout vaisseau du joueur à la liste des objets du jeu
             AddNewGameObject(this.playerShip);
 
             // Initialisation des bunkers et Position initiale centrée en bas
-            this.bunker = new Bunker(new Vecteur2D(gameSize.Width / 2 - 45, gameSize.Height - 125));
-            this.bunker2 = new Bunker(new Vecteur2D(gameSize.Width / 2 - 190, gameSize.Height - 125));
-            this.bunker3 = new Bunker(new Vecteur2D(gameSize.Width / 2 + 100, gameSize.Height - 125));
+            this.bunker = new Bunker(new Vecteur2D(gameSize.Width / 2 - 45, gameSize.Height - 125), Side.Neutral);
+            this.bunker2 = new Bunker(new Vecteur2D(gameSize.Width / 2 - 190, gameSize.Height - 125), Side.Neutral);
+            this.bunker3 = new Bunker(new Vecteur2D(gameSize.Width / 2 + 100, gameSize.Height - 125), Side.Neutral);
 
             // Ajouts des bunkers à la liste des objets du jeu
             AddNewGameObject(this.bunker);
@@ -122,7 +122,7 @@ namespace SpaceInvaders
             AddNewGameObject(this.bunker3);
 
             // Initialisation block ennemie et Position initiale coin supérieur gauche
-            this.enemies = new EnemyBlock(new Vecteur2D(10, 20), 250);
+            this.enemies = new EnemyBlock(new Vecteur2D(10, 20), 250, Side.Enemy);
           
             //Ajout différentes lignes d'ennemies
             enemies.AddLine(9, 1, SpaceInvaders.Properties.Resources.ship6);
@@ -206,7 +206,7 @@ namespace SpaceInvaders
                 if (keyPressed.Contains(Keys.Space))
                 {
                     // create new BalleQuiTombe
-                    GameObject newObject = new BalleQuiTombe(gameSize.Width / 2, 0);
+                    GameObject newObject = new BalleQuiTombe(gameSize.Width / 2, 0, Side.Enemy);
                     // add it to the game
                     AddNewGameObject(newObject);
                     // release key space (no autofire)

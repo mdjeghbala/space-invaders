@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Text;
 using System.Linq;
 using System.Text;
 
@@ -10,11 +11,17 @@ namespace SpaceInvaders
     /// This is the generic abstact base class for any entity in the game
     /// </summary>
     /// C’est une entité abstraite pour représenter un objet actif du jeux.
+    
+    // Enumeration pour différencier les camps dans le jeu
+    public enum Side { Ally, Enemy, Neutral }
+
     abstract class GameObject
     {
-       
-        public GameObject()
+        public Side ObjectSide { get; }
+
+        public GameObject(Side side)
         {
+            ObjectSide = side;
         }
 
         public abstract void Collision(Missile m);

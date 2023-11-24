@@ -11,7 +11,7 @@ namespace SpaceInvaders
     {
         private double vitesse = 150;
 
-        public Missile(Vecteur2D position, int lives, Bitmap image) : base(image, lives, position)
+        public Missile(Vecteur2D position, int lives, Bitmap image, Side side) : base(image, lives, position, side)
         {
         }
 

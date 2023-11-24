@@ -11,7 +11,7 @@ namespace SpaceInvaders
         private int lives;
         private Vecteur2D position;
 
-        public SimpleObject(Bitmap image, int lives, Vecteur2D position)
+        public SimpleObject(Bitmap image, int lives, Vecteur2D position, Side side) : base(side)
         {
             this.image = image;
             this.lives = lives;
@@ -75,13 +75,23 @@ namespace SpaceInvaders
             int collisionPixels = 0;
             return collisionPixels;
         }
-        public override void Collision(Missile m)
+        public override void Collision(Missile missile)
         {
-            // Comptage des pixels en collision
-            int numberOfPixelsInCollision = CountCollisionPixels(m);
 
-            // Appel de la méthode abstraite pour gérer la collision spécifique
-            OnCollision(m, numberOfPixelsInCollision);
+            if (missile.ObjectSide == this.ObjectSide)
+            {
+                // Ignore la collision entre deux entités du meme camp
+                return;
+            }
+            else
+            {
+                // Comptage des pixels en collision
+                int numberOfPixelsInCollision = CountCollisionPixels(missile);
+
+                // Appel de la méthode abstraite pour gérer la collision spécifique
+                OnCollision(missile, numberOfPixelsInCollision);
+
+            }
         }
 
         // Méthode abstraite pour gérer la collision spécifique à chaque sous-classe

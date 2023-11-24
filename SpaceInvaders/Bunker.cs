@@ -9,7 +9,7 @@ namespace SpaceInvaders
 {
     class Bunker : SimpleObject
     {
-        public Bunker(Vecteur2D position) : base(SpaceInvaders.Properties.Resources.bunker, 3, position)
+        public Bunker(Vecteur2D position, Side side) : base(SpaceInvaders.Properties.Resources.bunker, 3, position, side)
         {
         }
 
@@ -29,7 +29,15 @@ namespace SpaceInvaders
 
         public override void Collision(Missile missile)
         {
-            TestCollision(missile);
+            if (missile.ObjectSide == this.ObjectSide)
+            {
+                // Ignore la collision si le missile est du meme camp que le bunker
+                return;
+            }
+            else
+            {
+                TestCollision(missile);
+            }
         }
 
         public override void Update(Game gameInstance, double deltaT)
