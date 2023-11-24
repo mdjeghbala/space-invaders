@@ -75,6 +75,9 @@ namespace SpaceInvaders
 
         private EnemyBlock enemies;
 
+        public Random random = new Random();
+
+
         // ENUM ET ATTRIBUT POUR GERER L'ETAT DU JEU
         public enum GameState { Play, Pause }
 

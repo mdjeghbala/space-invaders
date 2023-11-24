@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 
@@ -12,6 +12,8 @@ namespace SpaceInvaders
         private Size size;
         private Vecteur2D position;
         private int moveSpeed = 15;
+        private double randomShootProbability = 0.035;
+
         public EnemyBlock(Vecteur2D position, int baseWidth, Side side) : base(side)
         {
             this.position = position;
@@ -95,7 +97,10 @@ namespace SpaceInvaders
                 // La direction du bloc passe à gauche
                 direction = -1;
                 // Augmentation de la vitesse horizontale du bloc
-                moveSpeed += 3;
+                moveSpeed += 8;
+                // Augmentation de la probabilité de tir
+                randomShootProbability += 0.025;
+                Debug.WriteLine(randomShootProbability.ToString());
             }
             // Si le bloc a atteint le bord gauche de l'écran
             if (position.X <= 0 && direction == -1)
@@ -105,7 +110,10 @@ namespace SpaceInvaders
                 // La direction du bloc passe à droite
                 direction = 1;
                 // Augmentation de la vitesse horizontale du bloc
-                moveSpeed += 3;
+                moveSpeed += 8;
+                // Augmentation de la probabilité de tir
+                randomShootProbability += 0.015;
+                Debug.WriteLine(randomShootProbability.ToString());
             }
 
             // Mise à jour de la position X de chaque vaisseau dans le bloc
@@ -115,6 +123,15 @@ namespace SpaceInvaders
             }
             // Suppression des vaisseaux enemis lorsqu'ils ne sont plus en vie
             enemyShips.RemoveWhere(ship => !ship.IsAlive());
+
+            // Tir aléatoire du bloc ennemi
+            foreach (SpaceShip enemyShip in enemyShips)
+            {
+                if (gameInstance.random.NextDouble() <= randomShootProbability * deltaT)
+                {
+                    enemyShip.shoot(gameInstance);
+                }
+            }
 
         }
 
@@ -136,7 +153,7 @@ namespace SpaceInvaders
             {
                 if (enemy.TestCollisionRectangles(missile))
                 {
-                    enemy.Collision(missile); 
+                    enemy.Collision(missile);
                 }
             }
         }

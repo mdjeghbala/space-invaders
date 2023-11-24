@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace SpaceInvaders
 {
@@ -11,8 +8,11 @@ namespace SpaceInvaders
     {
         private double vitesse = 150;
 
-        public Missile(Vecteur2D position, int lives, Bitmap image, Side side) : base(image, lives, position, side)
+        public Side MissileSide { get; private set; }
+
+        public Missile(Vecteur2D position, int lives, Bitmap image, Side missileSide) : base(image, lives, position, missileSide)
         {
+            MissileSide = missileSide;
         }
 
         public double Vitesse
@@ -22,16 +22,24 @@ namespace SpaceInvaders
 
         public override void Update(Game gameInstance, double deltaT)
         {
-            // Mise à jour de la position verticale du missile en fonction de sa vitesse
-            base.Position.Y -= Vitesse * deltaT;
-
-            // Contrôle de la sortie du missile hors de l'écran vertical
-            if (base.Position.Y < -30)
+            // Mise à jour de la position verticale du missile en fonction de sa vitesse et du camp du vaisseau
+            if (MissileSide == Side.Enemy)
             {
-                Lives = 0; // Détruire le missile s'il sort de l'écran
+                base.Position.Y += Vitesse * deltaT;
+            }
+            else if (MissileSide == Side.Ally)
+            {
+                base.Position.Y -= Vitesse * deltaT;
             }
 
-            // Gestion des collisions avec d'autres objets (à implémenter)
+            // Contrôle de la sortie du missile hors de l'écran vertical
+            if (base.Position.Y > gameInstance.gameSize.Height || base.Position.Y < 0)
+            {
+                // Destruction du missile s'il sort de l'écran
+                Lives = 0; 
+            }
+
+            // Gestion des collisions avec d'autres objets
             foreach (GameObject gameObject in gameInstance.gameObjects)
             {
                 gameObject.Collision(this);
@@ -41,7 +49,10 @@ namespace SpaceInvaders
 
         protected override void OnCollision(Missile missile, int numberOfPixelsInCollision)
         {
-
+            if (missile is Missile && TestCollisionRectangles(missile))
+            {
+                Lives = 0;
+            }
         }
 
     }
