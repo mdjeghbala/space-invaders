@@ -46,8 +46,19 @@ namespace SpaceInvaders
                 this.shoot(gameInstance);
             }
         }
+
+
+        public override void Draw(Game gameInstance, Graphics graphics)
+        {
+            graphics.DrawString("Vie : " + base.Lives, new Font(new FontFamily("Times New Roman"), 22, FontStyle.Bold, GraphicsUnit.Pixel), 
+            new SolidBrush(Color.Black), (gameInstance.gameSize.Width / 2) - 290, (gameInstance.gameSize.Height / 2) + 257);
+
+            base.Draw(gameInstance, graphics);
+        }
+
+
     }
-    }
+}
 
 
 

@@ -177,6 +177,7 @@ namespace SpaceInvaders
             }
         }
 
+
         /// <summary>
         /// Update game
         /// </summary>
