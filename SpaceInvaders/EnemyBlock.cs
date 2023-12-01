@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace SpaceInvaders
         private int baseWidth;
         private Size size;
         private Vecteur2D position;
-        private int moveSpeed = 15;
+        private int moveSpeed = 60;
         private double randomShootProbability = 0.035;
 
         public EnemyBlock(Vecteur2D position, int baseWidth, Side side) : base(side)
@@ -20,6 +21,17 @@ namespace SpaceInvaders
             this.baseWidth = baseWidth;
             this.size = new Size(baseWidth, 0);
         }
+
+        public Vecteur2D Position
+        {
+            get { return this.position; }
+        }
+
+        public Size Size
+        {
+            get { return this.size; }
+        }
+
 
         public void AddLine(int nbShips, int nbLives, Bitmap shipImage)
         {
@@ -45,6 +57,13 @@ namespace SpaceInvaders
 
             UpdateSize();
         }
+
+
+        public HashSet<SpaceShip> EnemyShips
+        {
+            get { return enemyShips; }
+        }
+
 
         public void UpdateSize()
         {
@@ -100,7 +119,6 @@ namespace SpaceInvaders
                 moveSpeed += 8;
                 // Augmentation de la probabilité de tir
                 randomShootProbability += 0.025;
-                Debug.WriteLine(randomShootProbability.ToString());
             }
             // Si le bloc a atteint le bord gauche de l'écran
             if (position.X <= 0 && direction == -1)
@@ -113,27 +131,22 @@ namespace SpaceInvaders
                 moveSpeed += 8;
                 // Augmentation de la probabilité de tir
                 randomShootProbability += 0.015;
-                Debug.WriteLine(randomShootProbability.ToString());
             }
 
-            // Mise à jour de la position X de chaque vaisseau dans le bloc
-            foreach (SpaceShip enemyShip in enemyShips)
+            foreach (SpaceShip enemyShip in EnemyShips)
             {
                 enemyShip.Position.X += direction * moveSpeed * deltaT;
-            }
-            // Suppression des vaisseaux enemis lorsqu'ils ne sont plus en vie
-            enemyShips.RemoveWhere(ship => !ship.IsAlive());
 
-            // Tir aléatoire du bloc ennemi
-            foreach (SpaceShip enemyShip in enemyShips)
-            {
+                // Tir aléatoire du bloc ennemi
                 if (gameInstance.random.NextDouble() <= randomShootProbability * deltaT)
                 {
                     enemyShip.shoot(gameInstance);
                 }
             }
 
+            enemyShips.RemoveWhere(ship =>  !(ship.IsAlive()));
         }
+
 
         public override void Draw(Game gameInstance, Graphics graphics)
         {
@@ -142,6 +155,7 @@ namespace SpaceInvaders
                 s.Draw(gameInstance, graphics);
             }
         }
+
         public override bool IsAlive()
         {
             return enemyShips.Any(ship => ship.IsAlive());

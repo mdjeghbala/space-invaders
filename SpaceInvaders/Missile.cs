@@ -6,7 +6,7 @@ namespace SpaceInvaders
 {
     class Missile : SimpleObject
     {
-        private double vitesse = 150;
+        private double vitesse = 500;
 
         public Side MissileSide { get; private set; }
 

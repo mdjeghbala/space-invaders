@@ -23,12 +23,10 @@ namespace SpaceInvaders
             if (gameInstance.keyPressed.Contains(Keys.Left))
             {
                 base.Position.x -= speedPixelPerSecond * deltaT;
-                Console.WriteLine("Gauche : " + base.Position.X);
             }
             if (gameInstance.keyPressed.Contains(Keys.Right))
             {
                 base.Position.x += speedPixelPerSecond * deltaT;
-                Console.WriteLine("Droite : " + base.Position.X);
             }
 
             // CONTROLE LA SORTIE HORS DE LA ZONE DE JEU HORIZONTALE
@@ -44,6 +42,7 @@ namespace SpaceInvaders
             if (gameInstance.keyPressed.Contains(Keys.Up))
             {
                 this.shoot(gameInstance);
+                gameInstance.ReleaseKey(Keys.Up);
             }
         }
 

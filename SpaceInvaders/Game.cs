@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Diagnostics;
 using System.Windows.Forms;
 using static System.Windows.Forms.AxHost;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace SpaceInvaders
 {
@@ -79,7 +80,7 @@ namespace SpaceInvaders
 
 
         // ENUM ET ATTRIBUT POUR GERER L'ETAT DU JEU
-        public enum GameState { Play, Pause }
+        public enum GameState { Play, Pause, Win, Lost }
 
         private GameState state = GameState.Play;
         #endregion
@@ -107,8 +108,16 @@ namespace SpaceInvaders
         private Game(Size gameSize)
         {
             this.gameSize = gameSize;
+            initGame();
+        }
 
-            // Initialisez le vaisseau du joueur avec 3 vies et Position initiale centrée en bas
+        #endregion
+
+        #region methods
+
+        public void initGame()
+        {
+            // Initialise le vaisseau du joueur avec 3 vies et Position initiale centrée en bas
             this.playerShip = new PlayerSpaceship(new Vecteur2D((gameSize.Width / 2) - 15, gameSize.Height - 50), 3, SpaceInvaders.Properties.Resources.ship3, Side.Ally);
 
             // Ajout vaisseau du joueur à la liste des objets du jeu
@@ -126,14 +135,14 @@ namespace SpaceInvaders
 
             // Initialisation block ennemie et Position initiale coin supérieur gauche
             this.enemies = new EnemyBlock(new Vecteur2D(10, 20), 250, Side.Enemy);
-          
+
             //Ajout différentes lignes d'ennemies
             enemies.AddLine(9, 1, SpaceInvaders.Properties.Resources.ship6);
             enemies.AddLine(5, 1, SpaceInvaders.Properties.Resources.ship5);
             enemies.AddLine(3, 1, SpaceInvaders.Properties.Resources.ship3);
             enemies.AddLine(9, 1, SpaceInvaders.Properties.Resources.ship8);
             enemies.AddLine(3, 1, SpaceInvaders.Properties.Resources.ship8);
-            enemies.AddLine(4, 1, SpaceInvaders.Properties.Resources.ship3);
+            enemies.AddLine(3, 1, SpaceInvaders.Properties.Resources.ship3);
 
 
             // Ajout block ennemie à la liste des objets du jeu
@@ -162,19 +171,23 @@ namespace SpaceInvaders
         /// <param name="g">Graphics to draw in</param>
         public void Draw(Graphics g)
         {
-            foreach (GameObject gameObject in gameObjects)
+            if (this.state == GameState.Play)
             {
-                gameObject.Draw(this, g);
+                foreach (GameObject gameObject in gameObjects)
+                {
+                    gameObject.Draw(this, g);
+                }
             }
 
-            if (state == GameState.Pause)
-            {
-                // Dessiner le texte "Pause" au centre de l'écran
-                string pauseText = "Pause";
-                SizeF textSize = g.MeasureString(pauseText, defaultFont);
-                PointF textPosition = new PointF((gameSize.Width - textSize.Width) / 2, (gameSize.Height - textSize.Height) / 2);
-                g.DrawString(pauseText, defaultFont, blackBrush, textPosition);
-            }
+            string text = "";
+
+            if (this.state == GameState.Pause) text = "Pause";
+            if (this.state == GameState.Lost) text = " Vous avez perdu ! \n\nAppuyez sur espace pour relancer une partie";
+            if (this.state == GameState.Win) text = " Vous avez gagné ! \n\nAppuyez sur espace pour relancer une partie";
+
+            SizeF textSize = g.MeasureString(text, defaultFont);
+            PointF textPosition = new PointF((gameSize.Width - textSize.Width) / 2, (gameSize.Height - textSize.Height) / 2);
+            g.DrawString(text, defaultFont, blackBrush, textPosition);
         }
 
 
@@ -183,38 +196,47 @@ namespace SpaceInvaders
         /// </summary>
         public void Update(double deltaT)
         {
-            // Gestion de la touche "p" pour la pause
-            if (keyPressed.Contains(Keys.P))
+            if (state == GameState.Play)
             {
-                if (state == GameState.Play)
+                // Gestion de la touche "p" pour mettre pause
+                if (keyPressed.Contains(Keys.P))
                 {
                     state = GameState.Pause;
-                }
-                else if (state == GameState.Pause)
-                {
-                    state = GameState.Play;
+                    ReleaseKey(Keys.P);
                 }
 
-                // Libérer la touche "p" pour éviter les changements d'état répétés
-                ReleaseKey(Keys.P);
-            }
-
-            if(state == GameState.Play)
-            {
                 // add new game objects
                 gameObjects.UnionWith(pendingNewGameObjects);
                 pendingNewGameObjects.Clear();
 
 
                 // if space is pressed
-                if (keyPressed.Contains(Keys.Space))
+                if (keyPressed.Contains(Keys.B))
                 {
                     // create new BalleQuiTombe
                     GameObject newObject = new BalleQuiTombe(gameSize.Width / 2, 0, Side.Enemy);
                     // add it to the game
                     AddNewGameObject(newObject);
                     // release key space (no autofire)
-                    ReleaseKey(Keys.Space);
+                    ReleaseKey(Keys.B);
+                }
+
+                // JOUEUR MEURT DONC PERDU
+                if(!(this.playerShip.IsAlive()))
+                {
+                    this.state = GameState.Lost;
+                }
+
+                //BLOC ENNEMIES MEURT DONC GAGNER
+                if (this.enemies.EnemyShips.All(ship => !ship.IsAlive()))
+                {
+                    this.state = GameState.Win;
+                }
+
+                // BLOC ENNEMIE ARRIVE AU NIVEAU DU JOUEUR
+                if (this.enemies.Position.Y + this.enemies.Size.Height >= this.playerShip.Position.y)
+                {
+                    this.playerShip.Lives = 0;
                 }
 
                 // update each game object
@@ -228,6 +250,29 @@ namespace SpaceInvaders
 
                 gameObjects.RemoveWhere(gameObject => gameObject is SpaceShip && !((SpaceShip)gameObject).IsAlive());
             }
+
+            // GAGNER OU PERDU DONC RELANCER LE JEU
+            if (this.state == GameState.Win || this.state == GameState.Lost)
+            {
+                gameObjects.RemoveWhere(gameObject => gameObject.IsAlive());
+                gameObjects.Clear();
+                pendingNewGameObjects.Clear();
+
+                if (keyPressed.Contains(Keys.Space))
+                {
+                    initGame();
+                    this.state = GameState.Play;
+                    ReleaseKey(Keys.Space);
+                }
+            }
+
+            // Gestion de la touche "p" pour enlever pause
+            if (state == GameState.Pause && keyPressed.Contains(Keys.P))
+            {
+                state = GameState.Play;
+                ReleaseKey(Keys.P);
+            }
+
         }
         #endregion
     }
