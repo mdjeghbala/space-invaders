@@ -98,38 +98,24 @@ namespace SpaceInvaders
             }
         }
 
-        private int direction = 1; // 1 pour droite, -1 pour gauche
-
         public override void Update(Game gameInstance, double deltaT)
         {
-            // Largeur de l'écran du jeu
             int screenWidth = gameInstance.gameSize.Width;
-
-            // Mise à jour de la position X du bloc en fonction de la direction
             position.X += direction * moveSpeed * deltaT;
 
-            // Si le bloc a atteint le bord droit de l'écran
             if (position.X + size.Width >= screenWidth && direction == 1)
             {
-                // Appel de la fonction pour faire descendre le bloc
                 MoveDown(enemyShips.First().Image.Height);
-                // La direction du bloc passe à gauche
                 direction = -1;
-                // Augmentation de la vitesse horizontale du bloc
                 moveSpeed += 8;
-                // Augmentation de la probabilité de tir
                 randomShootProbability += 0.025;
             }
             // Si le bloc a atteint le bord gauche de l'écran
             if (position.X <= 0 && direction == -1)
             {
-                // Appel de la fonction pour faire descendre le bloc
                 MoveDown(enemyShips.First().Image.Height);
-                // La direction du bloc passe à droite
                 direction = 1;
-                // Augmentation de la vitesse horizontale du bloc
                 moveSpeed += 8;
-                // Augmentation de la probabilité de tir
                 randomShootProbability += 0.015;
             }
 

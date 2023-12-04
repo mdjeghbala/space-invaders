@@ -35,7 +35,6 @@ namespace SpaceInvaders
             // Contrôle de la sortie du missile hors de l'écran vertical
             if (base.Position.Y > gameInstance.gameSize.Height || base.Position.Y < 0)
             {
-                // Destruction du missile s'il sort de l'écran
                 Lives = 0; 
             }
 
