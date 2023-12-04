@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace SpaceInvaders
 {
@@ -14,6 +15,7 @@ namespace SpaceInvaders
         private Vecteur2D position;
         private int moveSpeed = 60;
         private double randomShootProbability = 0.035;
+        public int direction = 1;
 
         public EnemyBlock(Vecteur2D position, int baseWidth, Side side) : base(side)
         {
@@ -136,6 +138,9 @@ namespace SpaceInvaders
 
         public override void Draw(Game gameInstance, Graphics graphics)
         {
+            Pen pen = new Pen(Color.Red);
+            graphics.DrawRectangle(pen, (float)position.X, (float)position.Y, size.Width, size.Height);
+
             foreach (SpaceShip s in enemyShips)
             {
                 s.Draw(gameInstance, graphics);
