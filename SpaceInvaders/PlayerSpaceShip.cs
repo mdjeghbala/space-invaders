@@ -11,8 +11,6 @@ namespace SpaceInvaders
     class PlayerSpaceship : SpaceShip
     {
         private double speedPixelPerSecond = 100;
-        public PlayerSpaceship(Vecteur2D position, int lives, Bitmap image, Side side) : base(position, lives, image, side)
-        {
 
         }
 
