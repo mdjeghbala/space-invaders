@@ -44,7 +44,6 @@ namespace SpaceInvaders
                 this.shoot(gameInstance);
                 gameInstance.ReleaseKey(Keys.Up);
             }
-        }
 
 
         public override void Draw(Game gameInstance, Graphics graphics)

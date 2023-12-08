@@ -144,7 +144,6 @@ namespace SpaceInvaders
             enemies.AddLine(3, 1, SpaceInvaders.Properties.Resources.ship8);
             enemies.AddLine(3, 1, SpaceInvaders.Properties.Resources.ship3);
 
-
             // Ajout block ennemie à la liste des objets du jeu
             AddNewGameObject(this.enemies);
 
