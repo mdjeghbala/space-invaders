@@ -122,7 +122,7 @@ namespace SpaceInvaders
         {
             backgroundImage = SpaceInvaders.Properties.Resources.background;
 
-            // Initialise le vaisseau du joueur avec 3 vies et Position initiale centrée en bas
+            // Initialise 2 vaisseaux joueur avec 3 vies et Position initiale centrée en bas
             this.playerShip = new PlayerSpaceship(new Vecteur2D((gameSize.Width / 2) - 157, gameSize.Height - 50), 3, SpaceInvaders.Properties.Resources.ship3, Side.Ally, false);
             this.playerShip2 = new PlayerSpaceship(new Vecteur2D((gameSize.Width / 2) + 130, gameSize.Height - 50), 3, SpaceInvaders.Properties.Resources.ship3, Side.Ally, true);
            
