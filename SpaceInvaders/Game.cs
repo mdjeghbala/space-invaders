@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using static System.Windows.Forms.AxHost;
 using static System.Net.Mime.MediaTypeNames;
+using NAudio.Wave;
 
 namespace SpaceInvaders
 {
@@ -86,9 +87,19 @@ namespace SpaceInvaders
         public enum GameState { Play, Pause, Win, Lost }
 
         private GameState state = GameState.Play;
+
+        private static WaveOutEvent waveOutEvent;
+        private static AudioFileReader audioFile;
+
+        private static WaveOutEvent winWaveOutEvent;
+        private static AudioFileReader winAudioFile;
+
+        private static WaveOutEvent lostWaveOutEvent;
+        private static AudioFileReader lostAudioFile;
+
         #endregion
 
-       
+
 
         #region constructors
         /// <summary>
@@ -120,11 +131,15 @@ namespace SpaceInvaders
 
         public void initGame()
         {
+            audioFile = null;
+            winAudioFile = null;
+            lostAudioFile = null;
+
             backgroundImage = SpaceInvaders.Properties.Resources.background;
 
             // Initialise 2 vaisseaux joueur avec 3 vies et Position initiale centrée en bas
-            this.playerShip = new PlayerSpaceship(new Vecteur2D((gameSize.Width / 2) - 157, gameSize.Height - 50), 3, SpaceInvaders.Properties.Resources.ship3, Side.Ally, false);
-            this.playerShip2 = new PlayerSpaceship(new Vecteur2D((gameSize.Width / 2) + 130, gameSize.Height - 50), 3, SpaceInvaders.Properties.Resources.ship3, Side.Ally, true);
+            this.playerShip = new PlayerSpaceship(new Vecteur2D((gameSize.Width / 2) - 157, gameSize.Height - 50), 1, SpaceInvaders.Properties.Resources.ship3, Side.Ally, false);
+            this.playerShip2 = new PlayerSpaceship(new Vecteur2D((gameSize.Width / 2) + 130, gameSize.Height - 50), 1, SpaceInvaders.Properties.Resources.ship3, Side.Ally, true);
            
             // Ajout vaisseau du joueur à la liste des objets du jeu
             AddNewGameObject(this.playerShip);
@@ -170,6 +185,96 @@ namespace SpaceInvaders
             keyPressed.Remove(key);
         }
 
+        public void verifGameSound()
+        {
+            if (this.state == GameState.Play)
+            {
+                audioFile = new AudioFileReader("C:\\Users\\rachi\\OneDrive\\Documents\\GitHub\\projet-spaceinvaders2023-rachid-abdoulalime\\SpaceInvaders\\Resources\\gameMusic.wav");
+                waveOutEvent = new WaveOutEvent();
+            }
+
+            if (winAudioFile == null)
+            {
+                winAudioFile = new AudioFileReader("C:\\Users\\rachi\\OneDrive\\Documents\\GitHub\\projet-spaceinvaders2023-rachid-abdoulalime\\SpaceInvaders\\Resources\\victorySound.wav");
+                winWaveOutEvent = new WaveOutEvent();
+            }
+            if (lostAudioFile == null)
+            {
+                lostAudioFile = new AudioFileReader("C:\\Users\\rachi\\OneDrive\\Documents\\GitHub\\projet-spaceinvaders2023-rachid-abdoulalime\\SpaceInvaders\\Resources\\lostSound.wav");
+                lostWaveOutEvent = new WaveOutEvent();
+            }
+            waveOutEvent.Init(audioFile);
+            waveOutEvent.Play();
+        }
+
+        public void winGameSound()
+        {
+            if (winAudioFile == null)
+            {
+                winAudioFile = new AudioFileReader("C:\\Users\\rachi\\OneDrive\\Documents\\GitHub\\projet-spaceinvaders2023-rachid-abdoulalime\\SpaceInvaders\\Resources\\victorySound.wav");
+                winWaveOutEvent = new WaveOutEvent();
+                winWaveOutEvent.Init(winAudioFile);
+                winWaveOutEvent.Play();
+            }
+        }
+
+        public void gameCreatedMusic()
+        {
+            if (this.state == GameState.Play)
+            {
+                audioFile = new AudioFileReader("C:\\Users\\rachi\\OneDrive\\Documents\\GitHub\\projet-spaceinvaders2023-rachid-abdoulalime\\SpaceInvaders\\Resources\\gameMusic.wav");
+                waveOutEvent = new WaveOutEvent();
+                waveOutEvent.Init(audioFile);
+                waveOutEvent.Play();
+            }
+        }
+
+
+        public void loseGameSound()
+        {
+            if (lostAudioFile == null)
+            {
+                lostAudioFile = new AudioFileReader("C:\\Users\\rachi\\OneDrive\\Documents\\GitHub\\projet-spaceinvaders2023-rachid-abdoulalime\\SpaceInvaders\\Resources\\lostSound.wav");
+                lostWaveOutEvent = new WaveOutEvent();
+                lostWaveOutEvent.Init(lostAudioFile);
+                lostWaveOutEvent.Play();
+            }
+        }
+
+        public void verifMusic()
+        {
+            if (audioFile == null)
+            {
+                gameCreatedMusic();
+            }
+            else
+            {
+                if (this.state == GameState.Play)
+                {
+                    waveOutEvent.Play();
+                }
+
+                if (this.state == GameState.Pause)
+                {
+                    waveOutEvent.Pause();
+                }
+
+                if (this.state == GameState.Win || this.state == GameState.Lost)
+                {
+                    waveOutEvent.Stop();
+
+                    if (this.state == GameState.Win)
+                    {
+                        winGameSound();
+                    }
+                    if (this.state == GameState.Lost)
+                    {
+                        loseGameSound(); 
+                    }
+                }
+            }
+        }
+
 
         /// <summary>
         /// Draw the whole game
@@ -177,10 +282,7 @@ namespace SpaceInvaders
         /// <param name="g">Graphics to draw in</param>
         public void Draw(Graphics g)
         {
-            if (backgroundImage != null)
-            {
-                g.DrawImage(backgroundImage, new Rectangle(0, 0, gameSize.Width, gameSize.Height));
-            }
+            g.DrawImage(backgroundImage, new Rectangle(0, 0, gameSize.Width, gameSize.Height));
 
             if (this.state == GameState.Play)
             {
@@ -209,10 +311,13 @@ namespace SpaceInvaders
         {
             if (state == GameState.Play)
             {
+                verifMusic();
+
                 // Gestion de la touche "p" pour mettre pause
                 if (keyPressed.Contains(Keys.P))
                 {
                     state = GameState.Pause;
+                    verifMusic();
                     ReleaseKey(Keys.P);
                 }
 
@@ -232,7 +337,7 @@ namespace SpaceInvaders
                     ReleaseKey(Keys.B);
                 }
 
-                // JOUEUR MEURT DONC PERDU
+                // JOUEURS MEURT DONC PERDU
                 if(!(this.playerShip.IsAlive()) && !(this.playerShip2.IsAlive()))
                 {
                     this.state = GameState.Lost;
@@ -266,6 +371,7 @@ namespace SpaceInvaders
             // GAGNER OU PERDU DONC RELANCER LE JEU
             if (this.state == GameState.Win || this.state == GameState.Lost)
             {
+                verifMusic();
                 gameObjects.RemoveWhere(gameObject => gameObject.IsAlive());
                 gameObjects.Clear();
                 pendingNewGameObjects.Clear();

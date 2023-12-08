@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
+using NAudio.Wave;
 
 namespace SpaceInvaders
 {
@@ -35,6 +36,13 @@ namespace SpaceInvaders
 
                 // Ajout du missile au jeu
                 gameInstance.AddNewGameObject(this.missile);
+
+                AudioFileReader audioFile = new AudioFileReader("C:\\Users\\rachi\\OneDrive\\Documents\\GitHub\\projet-spaceinvaders2023-rachid-abdoulalime\\SpaceInvaders\\Resources\\laserShoot.wav");
+                WaveOutEvent waveOutEvent = new WaveOutEvent();
+
+                waveOutEvent.Init(audioFile);
+                waveOutEvent.Volume = 0.9f;
+                waveOutEvent.Play();
             }
 
         }
@@ -51,6 +59,11 @@ namespace SpaceInvaders
                 //Reduction de la vie lorsqu'un vaisseau est touché 
                 Lives--;
                 missile.Lives--;
+
+                AudioFileReader audioFile = new AudioFileReader("C:\\Users\\rachi\\OneDrive\\Documents\\GitHub\\projet-spaceinvaders2023-rachid-abdoulalime\\SpaceInvaders\\Resources\\explosionSound.wav");
+                WaveOutEvent waveOutEvent = new WaveOutEvent();
+                waveOutEvent.Init(audioFile);
+                waveOutEvent.Play();
             }
         }
 

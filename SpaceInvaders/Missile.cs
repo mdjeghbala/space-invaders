@@ -1,6 +1,8 @@
-﻿using System;
+﻿using NAudio.SoundFont;
+using SpaceInvaders.Properties;
+using System;
 using System.Drawing;
-
+using System.Xml.Linq;
 
 namespace SpaceInvaders
 {
