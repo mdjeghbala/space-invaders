@@ -69,6 +69,7 @@ namespace SpaceInvaders
         private static Font defaultFont = new Font("Times New Roman", 24, FontStyle.Bold, GraphicsUnit.Pixel);
 
         private SpaceShip playerShip;
+        private SpaceShip playerShip2;
 
         private Bunker bunker;
         private Bunker bunker2;
@@ -77,6 +78,8 @@ namespace SpaceInvaders
         private EnemyBlock enemies;
 
         public Random random = new Random();
+
+        private Bitmap backgroundImage;
 
 
         // ENUM ET ATTRIBUT POUR GERER L'ETAT DU JEU
@@ -117,11 +120,15 @@ namespace SpaceInvaders
 
         public void initGame()
         {
-            // Initialise le vaisseau du joueur avec 3 vies et Position initiale centrée en bas
-            this.playerShip = new PlayerSpaceship(new Vecteur2D((gameSize.Width / 2) - 15, gameSize.Height - 50), 3, SpaceInvaders.Properties.Resources.ship3, Side.Ally);
+            backgroundImage = SpaceInvaders.Properties.Resources.background;
 
+            // Initialise le vaisseau du joueur avec 3 vies et Position initiale centrée en bas
+            this.playerShip = new PlayerSpaceship(new Vecteur2D((gameSize.Width / 2) - 157, gameSize.Height - 50), 3, SpaceInvaders.Properties.Resources.ship3, Side.Ally, false);
+            this.playerShip2 = new PlayerSpaceship(new Vecteur2D((gameSize.Width / 2) + 130, gameSize.Height - 50), 3, SpaceInvaders.Properties.Resources.ship3, Side.Ally, true);
+           
             // Ajout vaisseau du joueur à la liste des objets du jeu
             AddNewGameObject(this.playerShip);
+            AddNewGameObject(this.playerShip2);
 
             // Initialisation des bunkers et Position initiale centrée en bas
             this.bunker = new Bunker(new Vecteur2D(gameSize.Width / 2 - 45, gameSize.Height - 125), Side.Neutral);
@@ -170,6 +177,11 @@ namespace SpaceInvaders
         /// <param name="g">Graphics to draw in</param>
         public void Draw(Graphics g)
         {
+            if (backgroundImage != null)
+            {
+                g.DrawImage(backgroundImage, new Rectangle(0, 0, gameSize.Width, gameSize.Height));
+            }
+
             if (this.state == GameState.Play)
             {
                 foreach (GameObject gameObject in gameObjects)
@@ -186,7 +198,7 @@ namespace SpaceInvaders
 
             SizeF textSize = g.MeasureString(text, defaultFont);
             PointF textPosition = new PointF((gameSize.Width - textSize.Width) / 2, (gameSize.Height - textSize.Height) / 2);
-            g.DrawString(text, defaultFont, blackBrush, textPosition);
+            g.DrawString(text, defaultFont, new SolidBrush(Color.White), textPosition);
         }
 
 
@@ -221,7 +233,7 @@ namespace SpaceInvaders
                 }
 
                 // JOUEUR MEURT DONC PERDU
-                if(!(this.playerShip.IsAlive()))
+                if(!(this.playerShip.IsAlive()) && !(this.playerShip2.IsAlive()))
                 {
                     this.state = GameState.Lost;
                 }
@@ -236,6 +248,7 @@ namespace SpaceInvaders
                 if (this.enemies.Position.Y + this.enemies.Size.Height >= this.playerShip.Position.y)
                 {
                     this.playerShip.Lives = 0;
+                    this.playerShip2.Lives = 0;
                 }
 
                 // update each game object

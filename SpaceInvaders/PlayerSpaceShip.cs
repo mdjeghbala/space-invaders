@@ -12,19 +12,51 @@ namespace SpaceInvaders
     {
         private double speedPixelPerSecond = 100;
 
+        private bool forMultiplayer;
+
+        public PlayerSpaceship(Vecteur2D position, int lives, Bitmap image, Side side, bool multiplayer) : base(position, lives, image, side)
+        {
+            this.forMultiplayer = multiplayer;
         }
 
 
         public override void Update(Game gameInstance, double deltaT)
         {
             // DEPLACEMENT LATERAL
-            if (gameInstance.keyPressed.Contains(Keys.Left))
+            if (!this.forMultiplayer)
             {
-                base.Position.x -= speedPixelPerSecond * deltaT;
+                if (gameInstance.keyPressed.Contains(Keys.Left))
+                {
+                    base.Position.x -= speedPixelPerSecond * deltaT;
+                }
+                if (gameInstance.keyPressed.Contains(Keys.Right))
+                {
+                    base.Position.x += speedPixelPerSecond * deltaT;
+                }
+
+                if (gameInstance.keyPressed.Contains(Keys.Up))
+                {
+                    this.shoot(gameInstance);
+                    gameInstance.ReleaseKey(Keys.Space);
+                }
             }
-            if (gameInstance.keyPressed.Contains(Keys.Right))
+
+            if(this.forMultiplayer)
             {
-                base.Position.x += speedPixelPerSecond * deltaT;
+                if (gameInstance.keyPressed.Contains(Keys.S))
+                {
+                    base.Position.x -= speedPixelPerSecond * deltaT;
+                }
+                if (gameInstance.keyPressed.Contains(Keys.D))
+                {
+                    base.Position.x += speedPixelPerSecond * deltaT;
+                }
+
+                if (gameInstance.keyPressed.Contains(Keys.Space))
+                {
+                    this.shoot(gameInstance);
+                    gameInstance.ReleaseKey(Keys.Space);
+                }
             }
 
             // CONTROLE LA SORTIE HORS DE LA ZONE DE JEU HORIZONTALE
@@ -37,17 +69,27 @@ namespace SpaceInvaders
                 base.Position.x = 0;
             }
 
-            if (gameInstance.keyPressed.Contains(Keys.Up))
-            {
-                this.shoot(gameInstance);
-                gameInstance.ReleaseKey(Keys.Up);
-            }
+            
+        }
 
 
         public override void Draw(Game gameInstance, Graphics graphics)
         {
+            float x = 0, y = 0;
+
+            if (!this.forMultiplayer)
+            {
+                x = (gameInstance.gameSize.Width / 2) - 297;
+                y = (gameInstance.gameSize.Height / 2) + 257;
+            }
+
+            if(this.forMultiplayer) {
+                x = (gameInstance.gameSize.Width) - 76;
+                y = (gameInstance.gameSize.Height / 2) + 257;
+            }
+            
             graphics.DrawString("Vie : " + base.Lives, new Font(new FontFamily("Times New Roman"), 22, FontStyle.Bold, GraphicsUnit.Pixel), 
-            new SolidBrush(Color.Black), (gameInstance.gameSize.Width / 2) - 290, (gameInstance.gameSize.Height / 2) + 257);
+            new SolidBrush(Color.White), x, y);
 
             base.Draw(gameInstance, graphics);
         }

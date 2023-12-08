@@ -13,7 +13,7 @@ namespace SpaceInvaders
         private int baseWidth;
         private Size size;
         private Vecteur2D position;
-        private int moveSpeed = 60;
+        private int moveSpeed = 40;
         private double randomShootProbability = 0.035;
         public int direction = 1;
 
