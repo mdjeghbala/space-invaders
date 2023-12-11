@@ -138,8 +138,8 @@ namespace SpaceInvaders
             backgroundImage = SpaceInvaders.Properties.Resources.background;
 
             // Initialise 2 vaisseaux joueur avec 3 vies et Position initiale centrée en bas
-            this.playerShip = new PlayerSpaceship(new Vecteur2D((gameSize.Width / 2) - 157, gameSize.Height - 50), 1, SpaceInvaders.Properties.Resources.ship3, Side.Ally, false);
-            this.playerShip2 = new PlayerSpaceship(new Vecteur2D((gameSize.Width / 2) + 130, gameSize.Height - 50), 1, SpaceInvaders.Properties.Resources.ship3, Side.Ally, true);
+            this.playerShip = new PlayerSpaceship(new Vecteur2D((gameSize.Width / 2) - 157, gameSize.Height - 50), 5, SpaceInvaders.Properties.Resources.ship3, Side.Ally, false);
+            this.playerShip2 = new PlayerSpaceship(new Vecteur2D((gameSize.Width / 2) + 130, gameSize.Height - 50), 5, SpaceInvaders.Properties.Resources.ship3, Side.Ally, true);
            
             // Ajout vaisseau du joueur à la liste des objets du jeu
             AddNewGameObject(this.playerShip);
@@ -189,18 +189,18 @@ namespace SpaceInvaders
         {
             if (this.state == GameState.Play)
             {
-                audioFile = new AudioFileReader("C:\\Users\\rachi\\OneDrive\\Documents\\GitHub\\projet-spaceinvaders2023-rachid-abdoulalime\\SpaceInvaders\\Resources\\gameMusic.wav");
+                audioFile = new AudioFileReader("Resources\\gameMusic.wav");
                 waveOutEvent = new WaveOutEvent();
             }
 
             if (winAudioFile == null)
             {
-                winAudioFile = new AudioFileReader("C:\\Users\\rachi\\OneDrive\\Documents\\GitHub\\projet-spaceinvaders2023-rachid-abdoulalime\\SpaceInvaders\\Resources\\victorySound.wav");
+                winAudioFile = new AudioFileReader("Resources\\victorySound.wav");
                 winWaveOutEvent = new WaveOutEvent();
             }
             if (lostAudioFile == null)
             {
-                lostAudioFile = new AudioFileReader("C:\\Users\\rachi\\OneDrive\\Documents\\GitHub\\projet-spaceinvaders2023-rachid-abdoulalime\\SpaceInvaders\\Resources\\lostSound.wav");
+                lostAudioFile = new AudioFileReader("Resources\\lostSound.wav");
                 lostWaveOutEvent = new WaveOutEvent();
             }
             waveOutEvent.Init(audioFile);
@@ -211,7 +211,7 @@ namespace SpaceInvaders
         {
             if (winAudioFile == null)
             {
-                winAudioFile = new AudioFileReader("C:\\Users\\rachi\\OneDrive\\Documents\\GitHub\\projet-spaceinvaders2023-rachid-abdoulalime\\SpaceInvaders\\Resources\\victorySound.wav");
+                winAudioFile = new AudioFileReader("Resources\\victorySound.wav");
                 winWaveOutEvent = new WaveOutEvent();
                 winWaveOutEvent.Init(winAudioFile);
                 winWaveOutEvent.Play();
@@ -222,7 +222,7 @@ namespace SpaceInvaders
         {
             if (this.state == GameState.Play)
             {
-                audioFile = new AudioFileReader("C:\\Users\\rachi\\OneDrive\\Documents\\GitHub\\projet-spaceinvaders2023-rachid-abdoulalime\\SpaceInvaders\\Resources\\gameMusic.wav");
+                audioFile = new AudioFileReader("Resources\\gameMusic.wav");
                 waveOutEvent = new WaveOutEvent();
                 waveOutEvent.Init(audioFile);
                 waveOutEvent.Play();
@@ -234,7 +234,7 @@ namespace SpaceInvaders
         {
             if (lostAudioFile == null)
             {
-                lostAudioFile = new AudioFileReader("C:\\Users\\rachi\\OneDrive\\Documents\\GitHub\\projet-spaceinvaders2023-rachid-abdoulalime\\SpaceInvaders\\Resources\\lostSound.wav");
+                lostAudioFile = new AudioFileReader("Resources\\lostSound.wav");
                 lostWaveOutEvent = new WaveOutEvent();
                 lostWaveOutEvent.Init(lostAudioFile);
                 lostWaveOutEvent.Play();
