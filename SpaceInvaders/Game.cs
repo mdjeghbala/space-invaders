@@ -159,11 +159,11 @@ namespace SpaceInvaders
             this.enemies = new EnemyBlock(new Vecteur2D(10, 20), 250, Side.Enemy);
 
             //Ajout différentes lignes d'ennemies
-            /*enemies.AddLine(9, 1, SpaceInvaders.Properties.Resources.ship6);
+            enemies.AddLine(9, 1, SpaceInvaders.Properties.Resources.ship6);
             enemies.AddLine(5, 1, SpaceInvaders.Properties.Resources.ship5);
             enemies.AddLine(3, 1, SpaceInvaders.Properties.Resources.ship3);
             enemies.AddLine(9, 1, SpaceInvaders.Properties.Resources.ship8);
-            enemies.AddLine(3, 1, SpaceInvaders.Properties.Resources.ship8);*/
+            enemies.AddLine(3, 1, SpaceInvaders.Properties.Resources.ship8);
             enemies.AddLine(3, 1, SpaceInvaders.Properties.Resources.ship3);
 
             // Ajout block ennemie à la liste des objets du jeu

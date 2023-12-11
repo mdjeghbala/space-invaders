@@ -175,19 +175,29 @@
     <None Include="Resources\background.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\laserShoot.wav" />
+    <None Include="Resources\laserShoot.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\gameMusic.wav" />
+    <None Include="Resources\victorySound.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\victorySound.wav" />
+    <None Include="Resources\lostSound.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\lostSound.wav" />
+    <None Include="Resources\explosionSound.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\explosionSound.wav" />
+    <None Include="Resources\gameMusic.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
