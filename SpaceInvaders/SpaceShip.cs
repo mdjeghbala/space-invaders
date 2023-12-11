@@ -37,7 +37,7 @@ namespace SpaceInvaders
                 // Ajout du missile au jeu
                 gameInstance.AddNewGameObject(this.missile);
 
-                AudioFileReader audioFile = new AudioFileReader("C:\\Users\\rachi\\OneDrive\\Documents\\GitHub\\projet-spaceinvaders2023-rachid-abdoulalime\\SpaceInvaders\\Resources\\laserShoot.wav");
+                AudioFileReader audioFile = new AudioFileReader("Resources\\laserShoot.wav");
                 WaveOutEvent waveOutEvent = new WaveOutEvent();
 
                 waveOutEvent.Init(audioFile);
@@ -60,7 +60,7 @@ namespace SpaceInvaders
                 Lives--;
                 missile.Lives--;
 
-                AudioFileReader audioFile = new AudioFileReader("C:\\Users\\rachi\\OneDrive\\Documents\\GitHub\\projet-spaceinvaders2023-rachid-abdoulalime\\SpaceInvaders\\Resources\\explosionSound.wav");
+                AudioFileReader audioFile = new AudioFileReader("Resources\\explosionSound.wav");
                 WaveOutEvent waveOutEvent = new WaveOutEvent();
                 waveOutEvent.Init(audioFile);
                 waveOutEvent.Play();
