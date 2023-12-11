@@ -372,6 +372,7 @@ namespace SpaceInvaders
             if (this.state == GameState.Win || this.state == GameState.Lost)
             {
                 verifMusic();
+
                 gameObjects.RemoveWhere(gameObject => gameObject.IsAlive());
                 gameObjects.Clear();
                 pendingNewGameObjects.Clear();
