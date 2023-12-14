@@ -139,9 +139,6 @@ namespace SpaceInvaders
 
         public override void Draw(Game gameInstance, Graphics graphics)
         {
-            Pen pen = new Pen(Color.Red);
-            graphics.DrawRectangle(pen, (float)position.X, (float)position.Y, size.Width, size.Height);
-
             foreach (SpaceShip s in enemyShips)
             {
                 s.Draw(gameInstance, graphics);
