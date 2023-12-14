@@ -13,7 +13,7 @@ namespace SpaceInvaders
         private int baseWidth;
         private Size size;
         private Vecteur2D position;
-        private int moveSpeed = 40;
+        private int moveSpeed = 4;
         private double randomShootProbability = 0.035;
         public int direction = 1;
 
@@ -133,6 +133,7 @@ namespace SpaceInvaders
             }
 
             enemyShips.RemoveWhere(ship =>  !(ship.IsAlive()));
+            UpdateSize();
         }
 
 
