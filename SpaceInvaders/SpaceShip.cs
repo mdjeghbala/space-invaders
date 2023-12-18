@@ -71,8 +71,6 @@ namespace SpaceInvaders
                 waveOutEvent.Play();
             }
         }
-
-
     }
 
 }
