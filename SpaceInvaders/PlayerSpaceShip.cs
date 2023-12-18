@@ -87,14 +87,15 @@ namespace SpaceInvaders
                 x = (gameInstance.gameSize.Width) - 76;
                 y = (gameInstance.gameSize.Height / 2) + 257;
             }
-            
+
             graphics.DrawString("Vie : " + base.Lives, new Font(new FontFamily("Times New Roman"), 22, FontStyle.Bold, GraphicsUnit.Pixel), 
             new SolidBrush(Color.White), x, y);
 
+            graphics.DrawString("Score : " + Game.score, new Font(new FontFamily("Times New Roman"), 22, FontStyle.Bold, GraphicsUnit.Pixel),
+            new SolidBrush(Color.White), 485, 10);
+
             base.Draw(gameInstance, graphics);
         }
-
-
     }
 }
 

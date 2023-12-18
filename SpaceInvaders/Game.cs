@@ -97,6 +97,8 @@ namespace SpaceInvaders
         private static WaveOutEvent lostWaveOutEvent;
         private static AudioFileReader lostAudioFile;
 
+        public static int score = 0;
+
         #endregion
 
 
@@ -131,6 +133,8 @@ namespace SpaceInvaders
 
         public void initGame()
         {
+
+            score = 0;
             audioFile = null;
             winAudioFile = null;
             lostAudioFile = null;
@@ -295,8 +299,8 @@ namespace SpaceInvaders
             string text = "";
 
             if (this.state == GameState.Pause) text = "Pause";
-            if (this.state == GameState.Lost) text = " Vous avez perdu ! \n\nAppuyez sur espace pour relancer une partie";
-            if (this.state == GameState.Win) text = " Vous avez gagné ! \n\nAppuyez sur espace pour relancer une partie";
+            if (this.state == GameState.Lost) text = " Vous avez perdu avec le score de " + score + " \n\nAppuyez sur espace pour relancer une partie";
+            if (this.state == GameState.Win) text = " Vous avez gagné avec le score de " + score + " !" + " \n\nAppuyez sur espace pour relancer une partie";
 
             SizeF textSize = g.MeasureString(text, defaultFont);
             PointF textPosition = new PointF((gameSize.Width - textSize.Width) / 2, (gameSize.Height - textSize.Height) / 2);

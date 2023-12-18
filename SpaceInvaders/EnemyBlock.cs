@@ -131,7 +131,6 @@ namespace SpaceInvaders
                     enemyShip.shoot(gameInstance);
                 }
             }
-
             enemyShips.RemoveWhere(ship =>  !(ship.IsAlive()));
             UpdateSize();
         }

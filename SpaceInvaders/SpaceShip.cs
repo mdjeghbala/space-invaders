@@ -10,11 +10,9 @@ namespace SpaceInvaders
 {
     class SpaceShip : SimpleObject
     {
-    
         private Missile missile;
 
         public Side SpaceshipSide { get; private set; }
-
 
         public SpaceShip(Vecteur2D position, int lives, Bitmap image, Side spaceshipside) : base(image, lives, position, spaceshipside)
         {
@@ -59,14 +57,20 @@ namespace SpaceInvaders
                 //Reduction de la vie lorsqu'un vaisseau est touché 
                 Lives--;
                 missile.Lives--;
-
+                if(SpaceshipSide == Side.Enemy)
+                {
+                    Game.score += 20;
+                }
+                else
+                {
+                    Game.score -= 20;
+                }
                 AudioFileReader audioFile = new AudioFileReader("Resources\\explosionSound.wav");
                 WaveOutEvent waveOutEvent = new WaveOutEvent();
                 waveOutEvent.Init(audioFile);
                 waveOutEvent.Play();
             }
         }
-
     }
 
 }
