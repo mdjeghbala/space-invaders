@@ -53,7 +53,6 @@ namespace SpaceInvaders
         #endregion
 
         #region static fields (helpers)
-
         /// <summary>
         /// Singleton for easy access
         /// </summary>
@@ -81,24 +80,9 @@ namespace SpaceInvaders
         public Random random = new Random();
 
         private Bitmap backgroundImage;
-
-
-        // ENUM ET ATTRIBUT POUR GERER L'ETAT DU JEU
         public enum GameState { Play, Pause, Win, Lost }
 
         private GameState state = GameState.Play;
-
-        private static WaveOutEvent waveOutEvent;
-        private static AudioFileReader audioFile;
-
-        private static WaveOutEvent winWaveOutEvent;
-        private static AudioFileReader winAudioFile;
-
-        private static WaveOutEvent lostWaveOutEvent;
-        private static AudioFileReader lostAudioFile;
-
-        public static int score = 0;
-
         #endregion
 
 
@@ -126,26 +110,21 @@ namespace SpaceInvaders
             this.gameSize = gameSize;
             initGame();
         }
-
         #endregion
 
         #region methods
-
         public void initGame()
         {
-
             score = 0;
             audioFile = null;
             winAudioFile = null;
             lostAudioFile = null;
-
             backgroundImage = SpaceInvaders.Properties.Resources.background;
 
             // Initialise 2 vaisseaux joueur avec 3 vies et Position initiale centrée en bas
             this.playerShip = new PlayerSpaceship(new Vecteur2D((gameSize.Width / 2) - 157, gameSize.Height - 50), 5, SpaceInvaders.Properties.Resources.ship3, Side.Ally, false);
             this.playerShip2 = new PlayerSpaceship(new Vecteur2D((gameSize.Width / 2) + 130, gameSize.Height - 50), 5, SpaceInvaders.Properties.Resources.ship3, Side.Ally, true);
            
-            // Ajout vaisseau du joueur à la liste des objets du jeu
             AddNewGameObject(this.playerShip);
             AddNewGameObject(this.playerShip2);
 
@@ -154,7 +133,6 @@ namespace SpaceInvaders
             this.bunker2 = new Bunker(new Vecteur2D(gameSize.Width / 2 - 190, gameSize.Height - 125), Side.Neutral);
             this.bunker3 = new Bunker(new Vecteur2D(gameSize.Width / 2 + 100, gameSize.Height - 125), Side.Neutral);
 
-            // Ajouts des bunkers à la liste des objets du jeu
             AddNewGameObject(this.bunker);
             AddNewGameObject(this.bunker2);
             AddNewGameObject(this.bunker3);
@@ -162,7 +140,6 @@ namespace SpaceInvaders
             // Initialisation block ennemie et Position initiale coin supérieur gauche
             this.enemies = new EnemyBlock(new Vecteur2D(10, 20), 250, Side.Enemy);
 
-            //Ajout différentes lignes d'ennemies
             enemies.AddLine(9, 1, SpaceInvaders.Properties.Resources.ship6);
             enemies.AddLine(5, 1, SpaceInvaders.Properties.Resources.ship5);
             enemies.AddLine(3, 1, SpaceInvaders.Properties.Resources.ship3);
@@ -170,14 +147,8 @@ namespace SpaceInvaders
             enemies.AddLine(3, 1, SpaceInvaders.Properties.Resources.ship8);
             enemies.AddLine(3, 1, SpaceInvaders.Properties.Resources.ship3);
 
-            // Ajout block ennemie à la liste des objets du jeu
             AddNewGameObject(this.enemies);
-
         }
-
-        #endregion
-
-        #region methods
 
         /// <summary>
         /// Force a given key to be ignored in following updates until the user
@@ -189,27 +160,6 @@ namespace SpaceInvaders
             keyPressed.Remove(key);
         }
 
-        public void verifGameSound()
-        {
-            if (this.state == GameState.Play)
-            {
-                audioFile = new AudioFileReader("Resources\\gameMusic.wav");
-                waveOutEvent = new WaveOutEvent();
-            }
-
-            if (winAudioFile == null)
-            {
-                winAudioFile = new AudioFileReader("Resources\\victorySound.wav");
-                winWaveOutEvent = new WaveOutEvent();
-            }
-            if (lostAudioFile == null)
-            {
-                lostAudioFile = new AudioFileReader("Resources\\lostSound.wav");
-                lostWaveOutEvent = new WaveOutEvent();
-            }
-            waveOutEvent.Init(audioFile);
-            waveOutEvent.Play();
-        }
 
         public void winGameSound()
         {
@@ -329,18 +279,6 @@ namespace SpaceInvaders
                 gameObjects.UnionWith(pendingNewGameObjects);
                 pendingNewGameObjects.Clear();
 
-
-                // if space is pressed
-                if (keyPressed.Contains(Keys.B))
-                {
-                    // create new BalleQuiTombe
-                    GameObject newObject = new BalleQuiTombe(gameSize.Width / 2, 0, Side.Enemy);
-                    // add it to the game
-                    AddNewGameObject(newObject);
-                    // release key space (no autofire)
-                    ReleaseKey(Keys.B);
-                }
-
                 // JOUEURS MEURT DONC PERDU
                 if(!(this.playerShip.IsAlive()) && !(this.playerShip2.IsAlive()))
                 {
@@ -368,7 +306,6 @@ namespace SpaceInvaders
 
                 // remove dead objects
                 gameObjects.RemoveWhere(gameObject => !gameObject.IsAlive());
-
                 gameObjects.RemoveWhere(gameObject => gameObject is SpaceShip && !((SpaceShip)gameObject).IsAlive());
             }
 
@@ -376,7 +313,6 @@ namespace SpaceInvaders
             if (this.state == GameState.Win || this.state == GameState.Lost)
             {
                 verifMusic();
-
                 gameObjects.RemoveWhere(gameObject => gameObject.IsAlive());
                 gameObjects.Clear();
                 pendingNewGameObjects.Clear();
@@ -395,7 +331,6 @@ namespace SpaceInvaders
                 state = GameState.Play;
                 ReleaseKey(Keys.P);
             }
-
         }
         #endregion
     }

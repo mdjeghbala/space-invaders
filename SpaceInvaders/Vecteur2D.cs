@@ -66,8 +66,6 @@ namespace SpaceInvaders
         {
             return new Vecteur2D( v1.x / scalaire, v1.y / scalaire);
         }
-
-
     }
 
 }

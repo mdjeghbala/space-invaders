@@ -25,7 +25,6 @@ namespace SpaceInvaders
             {
                 TestCollisionPixels(missile);
             }
-        }
 
         public override void Collision(Missile missile)
         {

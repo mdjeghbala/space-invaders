@@ -55,9 +55,6 @@ namespace SpaceInvaders
                 Lives = 0;
             }
         }
-
     }
-
-
 
 }

@@ -68,8 +68,6 @@ namespace SpaceInvaders
             {
                 base.Position.x = 0;
             }
-
-            
         }
 
 

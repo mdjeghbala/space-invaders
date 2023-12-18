@@ -56,7 +56,6 @@ namespace SpaceInvaders
                 SpaceShip enemyShip = new SpaceShip(shipPosition, nbLives, shipImage, Side.Enemy);
                 enemyShips.Add(enemyShip);
             }
-
             UpdateSize();
         }
 
@@ -85,7 +84,6 @@ namespace SpaceInvaders
                 if (enemyShip.Position.Y + enemyShip.Image.Height > maxY)
                     maxY = (float)(enemyShip.Position.Y + enemyShip.Image.Height);
             }
-
             this.position = new Vecteur2D(minX, minY);
             this.size = new Size((int)(maxX - minX), (int)(maxY - minY));
         }

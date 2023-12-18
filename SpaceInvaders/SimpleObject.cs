@@ -60,7 +60,6 @@ namespace SpaceInvaders
                         {
                             // Collision détectée : marquer le pixel de l'objet comme transparent (couleur alpha à 0)
                             Image.SetPixel(objectX, objectY, Color.FromArgb(0, 0, 0, 0));
-                            // Réduire le nombre de vies du missile
                             missile.Lives--;
                         }
                     }
@@ -68,7 +67,6 @@ namespace SpaceInvaders
             }
         }
 
-        // Méthode pour compter les pixels en collision
         private int CountCollisionPixels(Missile missile)
         {
             // Logique de comptage des pixels en collision (à implémenter)
@@ -80,22 +78,15 @@ namespace SpaceInvaders
 
             if (missile.ObjectSide == this.ObjectSide)
             {
-                // Ignore la collision entre deux entités du meme camp
                 return;
             }
             else
             {
                 // Comptage des pixels en collision
                 int numberOfPixelsInCollision = CountCollisionPixels(missile);
-
-                // Appel de la méthode abstraite pour gérer la collision spécifique
                 OnCollision(missile, numberOfPixelsInCollision);
-
-            }
         }
 
-        // Méthode abstraite pour gérer la collision spécifique à chaque sous-classe
-        protected abstract void OnCollision(Missile m, int numberOfPixelsInCollision);
 
         public override void Draw(Game gameInstance, Graphics graphics)
         {
