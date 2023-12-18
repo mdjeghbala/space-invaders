@@ -145,7 +145,6 @@ namespace SpaceInvaders
             enemies.AddLine(3, 1, SpaceInvaders.Properties.Resources.ship3);
             enemies.AddLine(9, 1, SpaceInvaders.Properties.Resources.ship8);
             enemies.AddLine(3, 1, SpaceInvaders.Properties.Resources.ship8);
-            enemies.AddLine(3, 1, SpaceInvaders.Properties.Resources.ship3);
 
             AddNewGameObject(this.enemies);
         }
@@ -193,7 +192,6 @@ namespace SpaceInvaders
                 lostWaveOutEvent.Init(lostAudioFile);
                 lostWaveOutEvent.Play();
             }
-        }
 
         public void verifMusic()
         {
