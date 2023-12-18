@@ -13,35 +13,32 @@ namespace SpaceInvaders
         {
         }
 
+
         protected override void OnCollision(Missile missile, int numberOfPixelsInCollision)
         {
-            // Réduction du nombre de vies du missile en fonction du nombre de pixels en collision
+            // Reduction number omissile lives depending number of pixels in collision
             missile.Lives -= numberOfPixelsInCollision;
         }
 
+
         public void TestCollision(Missile missile)
         {
-            if (TestCollisionRectangles(missile))
-            {
-                TestCollisionPixels(missile);
-            }
+            if (TestCollisionRectangles(missile)) TestCollisionPixels(missile);
+        }
+
 
         public override void Collision(Missile missile)
         {
-            if (missile.ObjectSide == this.ObjectSide)
-            {
-                // Ignore la collision si le missile est du meme camp que le bunker
-                return;
-            }
-            else
-            {
-                TestCollision(missile);
-            }
+            if (missile.ObjectSide == this.ObjectSide) return;
+            else TestCollision(missile);
         }
+
 
         public override void Update(Game gameInstance, double deltaT)
         {
             
         }
     }
+
+
 }

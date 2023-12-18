@@ -11,6 +11,7 @@ namespace SpaceInvaders
         private int lives;
         private Vecteur2D position;
 
+
         public SimpleObject(Bitmap image, int lives, Vecteur2D position, Side side) : base(side)
         {
             this.image = image;
@@ -18,10 +19,12 @@ namespace SpaceInvaders
             this.position = position;
         }
 
+
         public Vecteur2D Position
         {
             get { return this.position; }
         }
+
 
         public int Lives
         {
@@ -29,10 +32,14 @@ namespace SpaceInvaders
             set { lives = value; }
         }
 
+
         public Bitmap Image
         {
             get { return this.image; }
         }
+
+
+        protected abstract void OnCollision(Missile m, int numberOfPixelsInCollision);
 
         public bool TestCollisionRectangles(Missile missile)
         {
@@ -41,6 +48,7 @@ namespace SpaceInvaders
 
             return objectRectangle.IntersectsWith(missileRectangle);
         }
+
 
         public void TestCollisionPixels(Missile missile)
         {
@@ -58,7 +66,7 @@ namespace SpaceInvaders
 
                         if (objectPixel.A > 0 && missilePixel.A > 0)
                         {
-                            // Collision détectée : marquer le pixel de l'objet comme transparent (couleur alpha à 0)
+                            // collision detected so decrease lives of missile
                             Image.SetPixel(objectX, objectY, Color.FromArgb(0, 0, 0, 0));
                             missile.Lives--;
                         }
@@ -67,24 +75,22 @@ namespace SpaceInvaders
             }
         }
 
+
         private int CountCollisionPixels(Missile missile)
         {
-            // Logique de comptage des pixels en collision (à implémenter)
+            // logical for count pixels in collision
             int collisionPixels = 0;
             return collisionPixels;
         }
+        
+
         public override void Collision(Missile missile)
         {
-
-            if (missile.ObjectSide == this.ObjectSide)
-            {
-                return;
-            }
-            else
-            {
-                // Comptage des pixels en collision
-                int numberOfPixelsInCollision = CountCollisionPixels(missile);
-                OnCollision(missile, numberOfPixelsInCollision);
+            if (missile.ObjectSide == this.ObjectSide) return;
+            
+            // counts collision pixels and call function for handle the collision
+            int numberOfPixelsInCollision = CountCollisionPixels(missile);
+            OnCollision(missile, numberOfPixelsInCollision);
         }
 
 
@@ -93,6 +99,7 @@ namespace SpaceInvaders
             if (Image != null)
                 graphics.DrawImage(image, (float)Position.X, (float)Position.Y, (float)Image.Width, (float)Image.Height);
         }
+
 
         public override bool IsAlive()
         {

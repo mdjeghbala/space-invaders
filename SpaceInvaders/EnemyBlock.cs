@@ -10,12 +10,19 @@ namespace SpaceInvaders
     class EnemyBlock : GameObject
     {
         private HashSet<SpaceShip> enemyShips = new HashSet<SpaceShip>();
+        
         private int baseWidth;
+        
         private Size size;
+
         private Vecteur2D position;
-        private int moveSpeed = 4;
+       
+        private int moveSpeed = 30;
+        
         private double randomShootProbability = 0.035;
+        
         public int direction = 1;
+
 
         public EnemyBlock(Vecteur2D position, int baseWidth, Side side) : base(side)
         {
@@ -24,10 +31,12 @@ namespace SpaceInvaders
             this.size = new Size(baseWidth, 0);
         }
 
+
         public Vecteur2D Position
         {
             get { return this.position; }
         }
+
 
         public Size Size
         {
@@ -43,14 +52,11 @@ namespace SpaceInvaders
             for (int i = 0; i < nbShips; i++)
             {
                 Vecteur2D shipPosition;
-                if (nbShips == 1)
-                {
-                    shipPosition = new Vecteur2D(this.position.X, this.position.Y + yOffset);
-                }
+                if (nbShips == 1) shipPosition = new Vecteur2D(this.position.X, this.position.Y + yOffset);
                 else
                 {
                     int spacing = (baseWidth - (nbShips * shipWidth)) / (nbShips - 1);
-                    shipPosition = new Vecteur2D(this.position.X + i * (shipWidth + spacing), this.position.Y + yOffset);
+                    shipPosition = new Vecteur2D(this.position.X + i * (shipWidth + spacing + 5), this.position.Y + yOffset + 10);
                 }
 
                 SpaceShip enemyShip = new SpaceShip(shipPosition, nbLives, shipImage, Side.Enemy);
@@ -75,47 +81,42 @@ namespace SpaceInvaders
 
             foreach (SpaceShip enemyShip in enemyShips)
             {
-                if (enemyShip.Position.X < minX)
-                    minX = (float)enemyShip.Position.X;
-                if (enemyShip.Position.Y < minY)
-                    minY = (float)enemyShip.Position.Y;
-                if (enemyShip.Position.X + enemyShip.Image.Width > maxX)
-                    maxX = (float)(enemyShip.Position.X + enemyShip.Image.Width);
-                if (enemyShip.Position.Y + enemyShip.Image.Height > maxY)
-                    maxY = (float)(enemyShip.Position.Y + enemyShip.Image.Height);
+                if (enemyShip.Position.X < minX) minX = (float)enemyShip.Position.X;
+                if (enemyShip.Position.Y < minY) minY = (float)enemyShip.Position.Y;
+                if (enemyShip.Position.X + enemyShip.Image.Width > maxX) maxX = (float)(enemyShip.Position.X + enemyShip.Image.Width);
+                if (enemyShip.Position.Y + enemyShip.Image.Height > maxY) maxY = (float)(enemyShip.Position.Y + enemyShip.Image.Height);
             }
             this.position = new Vecteur2D(minX, minY);
             this.size = new Size((int)(maxX - minX), (int)(maxY - minY));
         }
 
-        // Fonction qui permet de faire descendre le bloc
+
         public void MoveDown(int distance)
         {
             position.Y += distance;
-            foreach (SpaceShip enemyShip in enemyShips)
-            {
-                enemyShip.Position.Y += distance;
-            }
+            foreach (SpaceShip enemyShip in enemyShips) enemyShip.Position.Y += distance;
         }
+
 
         public override void Update(Game gameInstance, double deltaT)
         {
             int screenWidth = gameInstance.gameSize.Width;
             position.X += direction * moveSpeed * deltaT;
 
+            // if enemy block reach ride side screen
             if (position.X + size.Width >= screenWidth && direction == 1)
             {
                 MoveDown(enemyShips.First().Image.Height);
                 direction = -1;
-                moveSpeed += 8;
+                moveSpeed += 10;
                 randomShootProbability += 0.025;
             }
-            // Si le bloc a atteint le bord gauche de l'écran
+            // if enemy block reach left side screen
             if (position.X <= 0 && direction == -1)
             {
                 MoveDown(enemyShips.First().Image.Height);
                 direction = 1;
-                moveSpeed += 8;
+                moveSpeed += 10;
                 randomShootProbability += 0.015;
             }
 
@@ -123,12 +124,10 @@ namespace SpaceInvaders
             {
                 enemyShip.Position.X += direction * moveSpeed * deltaT;
 
-                // Tir aléatoire du bloc ennemi
-                if (gameInstance.random.NextDouble() <= randomShootProbability * deltaT)
-                {
-                    enemyShip.shoot(gameInstance);
-                }
+                // random block enemy shoot
+                if (gameInstance.random.NextDouble() <= randomShootProbability * deltaT) enemyShip.shoot(gameInstance);
             }
+
             enemyShips.RemoveWhere(ship =>  !(ship.IsAlive()));
             UpdateSize();
         }
@@ -136,27 +135,25 @@ namespace SpaceInvaders
 
         public override void Draw(Game gameInstance, Graphics graphics)
         {
-            foreach (SpaceShip s in enemyShips)
-            {
-                s.Draw(gameInstance, graphics);
-            }
+            foreach (SpaceShip s in enemyShips) s.Draw(gameInstance, graphics);
         }
+
 
         public override bool IsAlive()
         {
             return enemyShips.Any(ship => ship.IsAlive());
         }
 
+        
         public override void Collision(Missile missile)
         {
             foreach (SpaceShip enemy in enemyShips)
             {
-                if (enemy.TestCollisionRectangles(missile))
-                {
-                    enemy.Collision(missile);
-                }
+                if (enemy.TestCollisionRectangles(missile)) enemy.Collision(missile);
             }
         }
+
     }
+
 
 }

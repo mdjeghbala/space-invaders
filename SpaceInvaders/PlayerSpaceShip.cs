@@ -12,7 +12,9 @@ namespace SpaceInvaders
     {
         private double speedPixelPerSecond = 100;
 
+
         private bool forMultiplayer;
+
 
         public PlayerSpaceship(Vecteur2D position, int lives, Bitmap image, Side side, bool multiplayer) : base(position, lives, image, side)
         {
@@ -22,7 +24,7 @@ namespace SpaceInvaders
 
         public override void Update(Game gameInstance, double deltaT)
         {
-            // DEPLACEMENT LATERAL
+            // horizontal move handler for player/playerMultiplayer
             if (!this.forMultiplayer)
             {
                 if (gameInstance.keyPressed.Contains(Keys.Left))
@@ -59,7 +61,7 @@ namespace SpaceInvaders
                 }
             }
 
-            // CONTROLE LA SORTIE HORS DE LA ZONE DE JEU HORIZONTALE
+            // handle the exit out horizontal zone of player 
             if (base.Position.X > gameInstance.gameSize.Width - 25)
             {
                 base.Position.x = (gameInstance.gameSize.Width) - 25;
@@ -67,7 +69,7 @@ namespace SpaceInvaders
             if (base.Position.X < 0)
             {
                 base.Position.x = 0;
-            }
+            } 
         }
 
 
@@ -75,6 +77,7 @@ namespace SpaceInvaders
         {
             float x = 0, y = 0;
 
+            // lives text for player/playerMultiplayer
             if (!this.forMultiplayer)
             {
                 x = (gameInstance.gameSize.Width / 2) - 297;
@@ -95,6 +98,7 @@ namespace SpaceInvaders
             base.Draw(gameInstance, graphics);
         }
     }
+
 }
 
 

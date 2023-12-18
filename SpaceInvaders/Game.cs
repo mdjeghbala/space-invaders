@@ -40,6 +40,7 @@ namespace SpaceInvaders
         }
         #endregion
 
+
         #region game technical elements
         /// <summary>
         /// Size of the game area
@@ -51,6 +52,7 @@ namespace SpaceInvaders
         /// </summary>
         public HashSet<Keys> keyPressed = new HashSet<Keys>();
         #endregion
+
 
         #region static fields (helpers)
         /// <summary>
@@ -68,6 +70,20 @@ namespace SpaceInvaders
         /// </summary>
         private static Font defaultFont = new Font("Times New Roman", 24, FontStyle.Bold, GraphicsUnit.Pixel);
 
+        private static WaveOutEvent waveOutEvent;
+        private static AudioFileReader audioFile;
+
+        private static WaveOutEvent winWaveOutEvent;
+        private static AudioFileReader winAudioFile;
+
+        private static WaveOutEvent lostWaveOutEvent;
+        private static AudioFileReader lostAudioFile;
+
+        public static int score = 0;
+        #endregion
+
+
+        # region fields Private and Public 
         private SpaceShip playerShip;
         private SpaceShip playerShip2;
 
@@ -112,6 +128,7 @@ namespace SpaceInvaders
         }
         #endregion
 
+
         #region methods
         public void initGame()
         {
@@ -121,14 +138,14 @@ namespace SpaceInvaders
             lostAudioFile = null;
             backgroundImage = SpaceInvaders.Properties.Resources.background;
 
-            // Initialise 2 vaisseaux joueur avec 3 vies et Position initiale centrée en bas
-            this.playerShip = new PlayerSpaceship(new Vecteur2D((gameSize.Width / 2) - 157, gameSize.Height - 50), 5, SpaceInvaders.Properties.Resources.ship3, Side.Ally, false);
-            this.playerShip2 = new PlayerSpaceship(new Vecteur2D((gameSize.Width / 2) + 130, gameSize.Height - 50), 5, SpaceInvaders.Properties.Resources.ship3, Side.Ally, true);
+            // intialize two players and add to list
+            this.playerShip = new PlayerSpaceship(new Vecteur2D((gameSize.Width / 2) - 157, gameSize.Height - 50), 3, SpaceInvaders.Properties.Resources.ship3, Side.Ally, false);
+            this.playerShip2 = new PlayerSpaceship(new Vecteur2D((gameSize.Width / 2) + 130, gameSize.Height - 50), 3, SpaceInvaders.Properties.Resources.ship3, Side.Ally, true);
            
             AddNewGameObject(this.playerShip);
             AddNewGameObject(this.playerShip2);
 
-            // Initialisation des bunkers et Position initiale centrée en bas
+            // initialize three bunkers and add to list
             this.bunker = new Bunker(new Vecteur2D(gameSize.Width / 2 - 45, gameSize.Height - 125), Side.Neutral);
             this.bunker2 = new Bunker(new Vecteur2D(gameSize.Width / 2 - 190, gameSize.Height - 125), Side.Neutral);
             this.bunker3 = new Bunker(new Vecteur2D(gameSize.Width / 2 + 100, gameSize.Height - 125), Side.Neutral);
@@ -137,17 +154,17 @@ namespace SpaceInvaders
             AddNewGameObject(this.bunker2);
             AddNewGameObject(this.bunker3);
 
-            // Initialisation block ennemie et Position initiale coin supérieur gauche
-            this.enemies = new EnemyBlock(new Vecteur2D(10, 20), 250, Side.Enemy);
+            // initialize enemy block with differents lines of enemy and add to list
+            this.enemies = new EnemyBlock(new Vecteur2D(10, 95), 250, Side.Enemy);
 
-            enemies.AddLine(9, 1, SpaceInvaders.Properties.Resources.ship6);
-            enemies.AddLine(5, 1, SpaceInvaders.Properties.Resources.ship5);
-            enemies.AddLine(3, 1, SpaceInvaders.Properties.Resources.ship3);
-            enemies.AddLine(9, 1, SpaceInvaders.Properties.Resources.ship8);
-            enemies.AddLine(3, 1, SpaceInvaders.Properties.Resources.ship8);
+            enemies.AddLine(7, 1, SpaceInvaders.Properties.Resources.ship4);
+            enemies.AddLine(7, 1, SpaceInvaders.Properties.Resources.ship1);
+            enemies.AddLine(7, 1, SpaceInvaders.Properties.Resources.ship7);
+            enemies.AddLine(7, 1, SpaceInvaders.Properties.Resources.ship3);
 
             AddNewGameObject(this.enemies);
         }
+
 
         /// <summary>
         /// Force a given key to be ignored in following updates until the user
@@ -160,22 +177,11 @@ namespace SpaceInvaders
         }
 
 
-        public void winGameSound()
+        private void PlayAudio(string filePath, ref WaveOutEvent waveOutEvent, ref AudioFileReader audioFile)
         {
-            if (winAudioFile == null)
+            if (audioFile == null)
             {
-                winAudioFile = new AudioFileReader("Resources\\victorySound.wav");
-                winWaveOutEvent = new WaveOutEvent();
-                winWaveOutEvent.Init(winAudioFile);
-                winWaveOutEvent.Play();
-            }
-        }
-
-        public void gameCreatedMusic()
-        {
-            if (this.state == GameState.Play)
-            {
-                audioFile = new AudioFileReader("Resources\\gameMusic.wav");
+                audioFile = new AudioFileReader(filePath);
                 waveOutEvent = new WaveOutEvent();
                 waveOutEvent.Init(audioFile);
                 waveOutEvent.Play();
@@ -183,15 +189,26 @@ namespace SpaceInvaders
         }
 
 
+        public void winGameSound()
+        {
+            PlayAudio("Resources\\victorySound.wav", ref winWaveOutEvent, ref winAudioFile);
+        }
+
+
+        public void gameCreatedMusic()
+        {
+            if (this.state == GameState.Play)
+            {
+                PlayAudio("Resources\\gameMusic.wav", ref waveOutEvent, ref audioFile);
+            }
+        }
+
+
         public void loseGameSound()
         {
-            if (lostAudioFile == null)
-            {
-                lostAudioFile = new AudioFileReader("Resources\\lostSound.wav");
-                lostWaveOutEvent = new WaveOutEvent();
-                lostWaveOutEvent.Init(lostAudioFile);
-                lostWaveOutEvent.Play();
-            }
+            PlayAudio("Resources\\lostSound.wav", ref lostWaveOutEvent, ref lostAudioFile);
+        }
+
 
         public void verifMusic()
         {
@@ -201,28 +218,13 @@ namespace SpaceInvaders
             }
             else
             {
-                if (this.state == GameState.Play)
-                {
-                    waveOutEvent.Play();
-                }
-
-                if (this.state == GameState.Pause)
-                {
-                    waveOutEvent.Pause();
-                }
-
-                if (this.state == GameState.Win || this.state == GameState.Lost)
+                if (this.state == GameState.Play) waveOutEvent.Play();
+                if (this.state == GameState.Pause) waveOutEvent.Pause();
+                if (this.state == GameState.Win || this.state == GameState.Lost) 
                 {
                     waveOutEvent.Stop();
-
-                    if (this.state == GameState.Win)
-                    {
-                        winGameSound();
-                    }
-                    if (this.state == GameState.Lost)
-                    {
-                        loseGameSound(); 
-                    }
+                    if (this.state == GameState.Win) winGameSound();
+                    if (this.state == GameState.Lost) loseGameSound();
                 }
             }
         }
@@ -238,10 +240,7 @@ namespace SpaceInvaders
 
             if (this.state == GameState.Play)
             {
-                foreach (GameObject gameObject in gameObjects)
-                {
-                    gameObject.Draw(this, g);
-                }
+                foreach (GameObject gameObject in gameObjects) gameObject.Draw(this, g);
             }
 
             string text = "";
@@ -265,7 +264,7 @@ namespace SpaceInvaders
             {
                 verifMusic();
 
-                // Gestion de la touche "p" pour mettre pause
+                // make pause
                 if (keyPressed.Contains(Keys.P))
                 {
                     state = GameState.Pause;
@@ -277,19 +276,19 @@ namespace SpaceInvaders
                 gameObjects.UnionWith(pendingNewGameObjects);
                 pendingNewGameObjects.Clear();
 
-                // JOUEURS MEURT DONC PERDU
+                // players die
                 if(!(this.playerShip.IsAlive()) && !(this.playerShip2.IsAlive()))
                 {
                     this.state = GameState.Lost;
                 }
 
-                //BLOC ENNEMIES MEURT DONC GAGNER
+                // enemy block dies
                 if (this.enemies.EnemyShips.All(ship => !ship.IsAlive()))
                 {
                     this.state = GameState.Win;
                 }
 
-                // BLOC ENNEMIE ARRIVE AU NIVEAU DU JOUEUR
+                // enemy block at same height of players so he lost
                 if (this.enemies.Position.Y + this.enemies.Size.Height >= this.playerShip.Position.y)
                 {
                     this.playerShip.Lives = 0;
@@ -297,17 +296,14 @@ namespace SpaceInvaders
                 }
 
                 // update each game object
-                foreach (GameObject gameObject in gameObjects)
-                {
-                    gameObject.Update(this, deltaT);
-                }
+                foreach (GameObject gameObject in gameObjects) gameObject.Update(this, deltaT);
 
                 // remove dead objects
                 gameObjects.RemoveWhere(gameObject => !gameObject.IsAlive());
                 gameObjects.RemoveWhere(gameObject => gameObject is SpaceShip && !((SpaceShip)gameObject).IsAlive());
             }
 
-            // GAGNER OU PERDU DONC RELANCER LE JEU
+            // restart game
             if (this.state == GameState.Win || this.state == GameState.Lost)
             {
                 verifMusic();
@@ -323,7 +319,7 @@ namespace SpaceInvaders
                 }
             }
 
-            // Gestion de la touche "p" pour enlever pause
+            // remove pause
             if (state == GameState.Pause && keyPressed.Contains(Keys.P))
             {
                 state = GameState.Play;
@@ -331,5 +327,8 @@ namespace SpaceInvaders
             }
         }
         #endregion
+
+
     }
+
 }
