@@ -63,7 +63,8 @@ namespace SpaceInvaders
                 }
                 else
                 {
-                    Game.score -= 20;
+                    if (Game.score <= 0) Game.score = 0;
+                    else Game.score -= 20;
                 }
                 AudioFileReader audioFile = new AudioFileReader("Resources\\explosionSound.wav");
                 WaveOutEvent waveOutEvent = new WaveOutEvent();
