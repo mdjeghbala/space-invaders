@@ -149,7 +149,13 @@ namespace SpaceInvaders
         {
             foreach (SpaceShip enemy in enemyShips)
             {
-                if (enemy.TestCollisionRectangles(missile)) enemy.Collision(missile);
+                if (enemy.TestCollisionRectangles(missile))
+                {
+                    enemy.Collision(missile);
+                    // Exit the loop once a collision is detected to avoid killing two ennemies at the same time
+                    break; 
+                }
+                    
             }
         }
 
