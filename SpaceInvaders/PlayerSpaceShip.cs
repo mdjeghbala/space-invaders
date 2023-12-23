@@ -10,10 +10,10 @@ namespace SpaceInvaders
 {
     class PlayerSpaceship : SpaceShip
     {
-        private double speedPixelPerSecond = 100;
+        readonly private double speedPixelPerSecond = 150;
 
 
-        private bool forMultiplayer;
+        readonly private bool forMultiplayer;
 
 
         public PlayerSpaceship(Vecteur2D position, int lives, Bitmap image, Side side, bool multiplayer) : base(position, lives, image, side)
@@ -38,7 +38,7 @@ namespace SpaceInvaders
 
                 if (gameInstance.keyPressed.Contains(Keys.Up))
                 {
-                    this.shoot(gameInstance);
+                    this.Shoot(gameInstance);
                     gameInstance.ReleaseKey(Keys.Space);
                 }
             }
@@ -56,7 +56,7 @@ namespace SpaceInvaders
 
                 if (gameInstance.keyPressed.Contains(Keys.Space))
                 {
-                    this.shoot(gameInstance);
+                    this.Shoot(gameInstance);
                     gameInstance.ReleaseKey(Keys.Space);
                 }
             }

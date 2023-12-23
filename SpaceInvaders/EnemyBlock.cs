@@ -9,9 +9,9 @@ namespace SpaceInvaders
 {
     class EnemyBlock : GameObject
     {
-        private HashSet<SpaceShip> enemyShips = new HashSet<SpaceShip>();
+        readonly private HashSet<SpaceShip> enemyShips = new HashSet<SpaceShip>();
         
-        private int baseWidth;
+        readonly private int baseWidth;
         
         private Size size;
 
@@ -125,7 +125,7 @@ namespace SpaceInvaders
                 enemyShip.Position.X += direction * moveSpeed * deltaT;
 
                 // random block enemy shoot
-                if (gameInstance.random.NextDouble() <= randomShootProbability * deltaT) enemyShip.shoot(gameInstance);
+                if (gameInstance.random.NextDouble() <= randomShootProbability * deltaT) enemyShip.Shoot(gameInstance);
             }
 
             enemyShips.RemoveWhere(ship =>  !(ship.IsAlive()));

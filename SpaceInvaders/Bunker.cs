@@ -14,10 +14,10 @@ namespace SpaceInvaders
         }
 
 
-        protected override void OnCollision(Missile missile, int numberOfPixelsInCollision)
+        protected override void OnCollision(Missile missile)
         {
             // Reduction number omissile lives depending number of pixels in collision
-            missile.Lives -= numberOfPixelsInCollision;
+            missile.Lives --;
         }
 
 

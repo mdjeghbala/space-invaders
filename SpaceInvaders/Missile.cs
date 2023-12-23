@@ -2,13 +2,14 @@
 using SpaceInvaders.Properties;
 using System;
 using System.Drawing;
+using System.Reflection;
 using System.Xml.Linq;
 
 namespace SpaceInvaders
 {
     class Missile : SimpleObject
     {
-        private double vitesse = 500;
+        readonly private double  vitesse = 200;
 
         public Side MissileSide { get; private set; }
 
@@ -39,9 +40,13 @@ namespace SpaceInvaders
         }
 
 
-        protected override void OnCollision(Missile missile, int numberOfPixelsInCollision)
-        {
-            if (missile is Missile && TestCollisionRectangles(missile)) Lives = 0;
+         protected override void OnCollision(Missile otherMissile)
+         {
+            if (Lives > 0 && otherMissile.Lives > 0 && TestCollisionRectangles(otherMissile))
+            {
+                Lives = 0;
+                otherMissile.Lives = 0;
+            }       
         }
     }
 
