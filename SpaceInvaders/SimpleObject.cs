@@ -7,9 +7,9 @@ namespace SpaceInvaders
 {
     abstract class SimpleObject : GameObject
     {
-        private Bitmap image;
+        readonly private Bitmap image;
         private int lives;
-        private Vecteur2D position;
+        readonly private Vecteur2D position;
 
 
         public SimpleObject(Bitmap image, int lives, Vecteur2D position, Side side) : base(side)
@@ -39,7 +39,7 @@ namespace SpaceInvaders
         }
 
 
-        protected abstract void OnCollision(Missile m, int numberOfPixelsInCollision);
+        protected abstract void OnCollision(Missile m);
 
         public bool TestCollisionRectangles(Missile missile)
         {
@@ -68,29 +68,18 @@ namespace SpaceInvaders
                         {
                             // collision detected so decrease lives of missile
                             Image.SetPixel(objectX, objectY, Color.FromArgb(0, 0, 0, 0));
-                            missile.Lives--;
+                            missile.Lives = 0;
                         }
                     }
                 }
             }
         }
-
-
-        private int CountCollisionPixels(Missile missile)
-        {
-            // logical for count pixels in collision
-            int collisionPixels = 0;
-            return collisionPixels;
-        }
         
-
         public override void Collision(Missile missile)
         {
             if (missile.ObjectSide == this.ObjectSide) return;
-            
-            // counts collision pixels and call function for handle the collision
-            int numberOfPixelsInCollision = CountCollisionPixels(missile);
-            OnCollision(missile, numberOfPixelsInCollision);
+
+            OnCollision(missile);
         }
 
 

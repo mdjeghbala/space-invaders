@@ -22,7 +22,7 @@ namespace SpaceInvaders
         }
 
 
-        public void shoot(Game gameInstance)
+        public void Shoot(Game gameInstance)
         {
             if (this.missile == null || !this.missile.IsAlive())
             {
@@ -50,7 +50,7 @@ namespace SpaceInvaders
         }
 
 
-        protected override void OnCollision(Missile missile, int numberOfPixelsInCollision)
+        protected override void OnCollision(Missile missile)
         {
             if (TestCollisionRectangles(missile))
             {
