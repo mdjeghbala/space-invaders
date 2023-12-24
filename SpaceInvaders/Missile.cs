@@ -9,7 +9,7 @@ namespace SpaceInvaders
 {
     class Missile : SimpleObject
     {
-        readonly private double  vitesse = 200;
+        readonly private double  vitesse = 500;
 
         public Side MissileSide { get; private set; }
 

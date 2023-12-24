@@ -10,7 +10,7 @@ namespace SpaceInvaders
 {
     class PlayerSpaceship : SpaceShip
     {
-        readonly private double speedPixelPerSecond = 150;
+        readonly private double speedPixelPerSecond = 100;
 
 
         readonly private bool forMultiplayer;
